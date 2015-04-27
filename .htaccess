@@ -1,0 +1,36 @@
+# LoadModule headers_module mod_headers.so
+# LoadModule expires_module mod_expires.so
+# LoadModule mime_module mod_mime.so
+
+Options -Indexes
+
+DirectoryIndex index.html
+
+AddDefaultCharset UTF-8
+
+AddType application/json .json
+# AddType audio/x-mpegurl .m3u
+AddType application/x-mpegURL .m3u8
+AddType video/MP2T .ts
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault A0
+</IfModule>
+
+# 1 hour caching on commonly updated files
+<FilesMatch "\.(xml|txt|html|js|css|ts|mp3|aac|m4a|m4v|mp4)$">
+<IfModule mod_expires.c>
+  ExpiresDefault A3600
+</IfModule>
+Header append Cache-Control "proxy-revalidate"
+</FilesMatch>
+
+# No caching on dynamically created files
+<FilesMatch "\.(m3u8|json)$">
+<IfModule mod_expires.c>
+  ExpiresActive Off
+</IfModule>
+Header set Cache-Control "private, no-cache, no-store, proxy-revalidate, no-transform"
+Header set Pragma "no-cache"
+</FilesMatch>

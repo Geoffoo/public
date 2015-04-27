@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+
+<!-- title and meta -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<meta name="description" content="Website desc. goes here." />
+<title>Zingg Music Lab</title>
+<link href="css/bootstrap.min.css" rel="stylesheet" />
+
+<!--[if IE]>
+    <script src="js/html5shiv.js"></script>	
+    <style type="text/css">
+    .clear {
+      zoom: 1;
+      display: block;
+    }
+    </style>
+<![endif]-->
+
+<!-- CAROUSEL Rotator STUFF --------------------------------------> 
+
+<script src="js/jquery-1.11.2.min.js"></script>
+<!--<script async src="js/smoothscroll.js"></script>-->
+
+<!-- css General -->
+<link rel="stylesheet" href="css/base3.css" />
+<link rel="stylesheet" href="css/style3.css" />
+
+<!-- js -->
+<script>
+    $(document).ready(function(){
+        $("#nav-mobile").html($("#nav-main").html());
+        $("#nav-trigger span").click(function(){
+            if ($("nav#nav-mobile ul").hasClass("expanded")) {
+                $("nav#nav-mobile ul.expanded").removeClass("expanded").slideUp(250);
+                $(this).removeClass("open");
+            } else {
+                $("nav#nav-mobile ul").addClass("expanded").slideDown(250);
+                $(this).addClass("open");
+            }
+        });
+    });
+</script>
+
+<script async src="js/modernizr.js"></script>
+<script async src="js/tabs.js"></script>
+<script async src="js/core.js"></script>
+
+<script>
+$(document).ready(function () {
+
+    var activeDiv = 1;
+    showDiv(activeDiv);
+    var timer = setInterval(changeDiv, 9000);
+
+
+    function changeDiv() {
+        activeDiv++;
+        if (activeDiv == 6) {
+            activeDiv = 1;
+        }
+        showDiv(activeDiv);
+    }
+
+    function showDiv(num) {
+        $('div.display').hide("slow");
+        $('#div' + num).fadeToggle("slow");
+    }
+
+
+});
+
+</script>
+	
+    
+ 
+
+
+
+
+</head>
+
+
+
+<body>
+
+
+
+<div id="wrapper">
+
+
+
+
+
+
+<div id="main">
+
+<!-- Begin Top Bar (Discount Coupon / Buy Ticket)  -->
+
+
+
+
+
+<!-- Begin Nav Container -->
+
+    <div class="container">
+    
+    <div class="inner_container">
+        <div id="nav-trigger">
+            <span><img src="img/zingg_logo2.png" width="162" height="31"><br/>Menu</span>
+        </div>
+        <nav id="nav-main">
+        <div class="logo"><a href="index.html"><img src="img/zingg_logo.png" alt="Zingg Music Lab"></a></div>
+            <ul>
+             <li><a href="index.html" style="color:#FFC93C;">Home</a></li>
+               <li><a href="basic.html">ZML Basic</a></li>
+                <li><a href="enterprise.html">ZML Enterprise</a></li>
+                <li><a href="music.html">The Music</a></li>
+                <li><a href="clients.html">Our Clients</a></li>
+                
+                <li class="login"><a href="login.html" style="margin-left:20px;">LOGIN</a></li>
+                
+            </ul>
+        </nav>
+        <nav id="nav-mobile"></nav>
+
+       
+    </div>
+      </div>
+    
+<!-- End Nav Container -->
+<!-- Begin Main Content Container -->
+
+<!-- Begin Large Rotating Banner -->
+
+<div style="min-height: 50px; padding-top:75px;">
+        <!-- Jssor Slider Begin -->
+        <!-- You can move inline styles to css file or css block. -->
+        <!-- ================================================== -->
+        <div id="slider1_container" style="display: none; position: relative; margin: 0 auto; top: 0px; left: 0px; width: 1300px; height: 300px; overflow: hidden;">
+            <!-- Loading Screen -->
+            <div u="loading" style="position: absolute; top: 0px; left: 0px;">
+                <div style="filter: alpha(opacity=70); opacity: 0.7; position: absolute; display: block; top: 0px; left: 0px; width: 100%; height: 100%;">
+                </div>
+                <div style="position: absolute; display: block; background: url(../img/loading.gif) no-repeat center center; top: 0px; left: 0px; width: 100%; height: 100%;">
+                </div>
+            </div>
+            <!-- Slides Container -->
+            <div u="slides" style="cursor: move; position: absolute; left: 0px; top: 0px; width: 1300px; height: 500px; overflow: hidden; z-index: 10;" >
+                <div style="background-image:url(img/home_banner_1.jpg); background-position:top center; background-repeat:no-repeat; width: 100%; height: 311px; padding-top: 60px;">
+                   
+                </div>
+                <div style="background-image:url(img/home_banner_2.jpg); background-position:top center; background-repeat:no-repeat; width: 100%; height: 311px; padding-top: 60px;">
+                    
+                </div>
+                <div style="background-image:url(img/home_banner_3.jpg); background-position:top center; background-repeat:no-repeat; width: 100%; height: 311px; padding-top: 60px;">
+                </div>
+                
+                <div style="background-image:url(img/home_banner_4.jpg); background-position:top center; background-repeat:no-repeat; width: 100%; height: 311px; padding-top: 60px;">
+                    
+</div>
+                
+                <div style="background-image:url(img/home_banner_5.jpg); background-position:top center; background-repeat:no-repeat; width: 100%; height: 311px; padding-top: 60px;">
+                    
+                </div>
+                
+                
+                
+            </div>
+
+           
+            <!-- bullet navigator container -->
+            
+                <!-- bullet navigator item prototype -->
+                
+            </div>
+            <!-- Bullet Navigator Skin End -->
+            <!-- Arrow Navigator Skin Begin -->
+           
+            <a style="display: none" href="http://www.jssor.com">Bootstrap Slider</a>
+        </div>
+
+
+<!-- End Large Rotating Banner -->
+
+<div class="swish_bg">
+
+<div class="block_level_content_holder">
+
+
+
+<div class="new_box_holder">
+
+<!-- Begin New Left Box -->
+<div class="new_box_1">
+<div class="new_box_product_title">
+BASIC
+</div>
+
+<div class="new_box_price_box">
+<span class="new_box_price"><span class="dollar_sign">$</span>21</span> <br>
+<strong>per month</strong> </div>
+
+<div class="new_box_text">
+
+<p>For single locations and small chains</p>
+<p> 40 long-playing music channels mixed for business</p>
+<p>No explicit language <br>100% licensed music</p>
+<p>No contracts, no hassle</p>
+<p>Easy setup with a web-connected device and audio system</p>
+
+</div>
+<div class="new_box_button"><button><a href="basic.html">Start a Free 30 Day Trial!</a></button></div>
+
+</div>
+<!-- End New Left Box -->
+<!-- Begin New Right Box -->
+
+<div class="new_box_2">
+
+<div class="new_box_price_holder">
+<div class="new_box_product_title">
+ENTERPRISE
+</div>
+
+<div class="new_box_price_box2">
+Flexible<br>
+Pricing
+</div>
+</div>
+<div class="new_box_text2">
+<p>Multiple locations</p>
+<p>Custom music</p>
+<p>Dayparting</p>
+<p>Voiceovers</p>
+<p>No explicit language.<br>
+100% licensed music</p>
+<p>Streaming audio players</p>
+<p>Media management</p>
+<p>Audio installation service</p>
+
+
+</div>
+<div class="new_box_button"><button><a href="basic.html">Learn More</a></button></div>
+
+</div>
+
+<!-- End New Right Box -->
+<!-- Begin Albums -->
+<div class="album_holder">
+
+<div class="album_text"><span class="forty">40</span> Music Channels</div>
+
+<p><img src="img/albums_1_2.png"></p>
+<p><img src="img/albums_3_4.png"></p>
+<p><img src="img/albums_5_6.png"></p>
+
+</div>
+
+<!-- End Albums -->
+</div>
+
+
+
+
+
+
+
+
+<!-- END 'Music Plays On' section -->
+
+<!-- End Bg Block 1 -->
+
+
+</div>
+<!-- BEGIN Bg Block 2 -->
+
+<div class="block_2_bg">
+<div class="block_level_content_holder">
+
+<!-- BEGIN 'Music Plays On' section -->
+<div class="plays_on_holder">
+
+<div class="plays_on_text">Music Plays On</div>
+
+</div>
+
+<div class="media_holder">
+<div class="media_1"><img src="img/media_1a.png"></div>
+<div class="media_2"><img src="img/media_2a.png"></div>
+<div class="media_3"><img src="img/media_3a.png"></div>
+</div>
+
+
+
+
+</div>
+
+
+
+ 
+
+
+</div>
+</div>
+
+<div class="block_level_content_holder">
+
+<div class="logo_holder"><img src="img/logos.png" width="960" height="102" alt="Logos">
+</div>
+
+</div>
+
+<!-- END Bg Block 2 -->
+
+<!-- End Main Content Container -->
+
+<!-- BEGIN Footer -->
+<div class="footer">
+  <div class="block_level_content_holder">
+    <div class="footer_block_first">
+      <h3>ZML Basic</h3>
+      <p><a href="basic.html">Features</a></p>
+      <p><a href="easy_setup.html">Easy Setup</a></p>
+      <p><a href="music.html">The Music</a></p>
+      <p><a href="signup_1.html">Sign Up / Sign In</a></p>
+    </div>
+    <div class="footer_block">
+      <h3>ZML Enterprise</h3>
+      <p><a href="enterprise.html">Features</a></p>
+      <p><a href="easy_setup.html">Setup / Tech Specs</a></p>
+      <p><a href="music.html">The Music</a></p>
+      <p><a href="faqs.html">FAQs</a></p>
+      <p><a href="contact.html">Contact Sales</a></p>
+    </div>
+    <div class="footer_block">
+      <h3>Contact The Lab</h3>
+      <h4>SALES</h4>
+      <p><a href="mailto: musicsales@zinggmusiclab.com">musicsales@zinggmusiclab.com</a></p>
+      <h4>CUSTOMER SUPPORT</h4>
+      <p><a href="mailto:service@zinggmusiclab.com">service@zinggmusiclab.com</a></p>
+      <h4>ONLINE</h4>
+      <p> <a href="contact.html">Online Contact Form</a></p>
+    </div>
+  </div>
+</div>
+<!-- END Footer -->
+
+<!-- BEGIN Copyright Box -->
+
+<div class="copyright_bg">
+<div class="block_level_content_holder">
+ © Copyright Zingg Music Lab. All Rights Reserved.
+</div>
+</div>
+
+<!-- END Copyright Box -->
+
+</div>
+
+<script type='text/javascript' src='js/jquery.modal.js'></script>
+<script type='text/javascript' src='js/site.js'></script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-54262092-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+<!-- Placed at the end of the document so the pages load faster -->
+    <script src="bootstrap.min.js"></script>
+    <script src="docs.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="ie10-viewport-bug-workaround.js"></script>
+
+    <!-- jssor slider scripts-->
+    <!-- use jssor.js + jssor.slider.js instead for development -->
+    <!-- jssor.slider.mini.js = (jssor.js + jssor.slider.js) -->
+    <script type="text/javascript" src="js/jssor.slider.mini.js"></script>
+    <script>
+        jQuery(document).ready(function ($) {
+
+            var options = {
+                $FillMode: 2,                                       //[Optional] The way to fill image in slide, 0 stretch, 1 contain (keep aspect ratio and put all inside slide), 2 cover (keep aspect ratio and cover whole slide), 4 actual size, 5 contain for large image, actual size for small image, default value is 0
+                $AutoPlay: true,                                    //[Optional] Whether to auto play, to enable slideshow, this option must be set to true, default value is false
+                $AutoPlayInterval: 8000,                            //[Optional] Interval (in milliseconds) to go for next slide since the previous stopped if the slider is auto playing, default value is 3000
+                $PauseOnHover: 1,                                   //[Optional] Whether to pause when mouse over if a slider is auto playing, 0 no pause, 1 pause for desktop, 2 pause for touch device, 3 pause for desktop and touch device, 4 freeze for desktop, 8 freeze for touch device, 12 freeze for desktop and touch device, default value is 1
+
+                $ArrowKeyNavigation: true,   			            //[Optional] Allows keyboard (arrow key) navigation or not, default value is false
+                $SlideEasing: $JssorEasing$.$EaseOutQuint,          //[Optional] Specifies easing for right to left animation, default value is $JssorEasing$.$EaseOutQuad
+                $SlideDuration: 800,                               //[Optional] Specifies default duration (swipe) for slide in milliseconds, default value is 500
+                $MinDragOffsetToSlide: 20,                          //[Optional] Minimum drag offset to trigger slide , default value is 20
+                //$SlideWidth: 600,                                 //[Optional] Width of every slide in pixels, default value is width of 'slides' container
+                //$SlideHeight: 300,                                //[Optional] Height of every slide in pixels, default value is height of 'slides' container
+                $SlideSpacing: 0, 					                //[Optional] Space between each slide in pixels, default value is 0
+                $DisplayPieces: 1,                                  //[Optional] Number of pieces to display (the slideshow would be disabled if the value is set to greater than 1), the default value is 1
+                $ParkingPosition: 0,                                //[Optional] The offset position to park slide (this options applys only when slideshow disabled), default value is 0.
+                $UISearchMode: 1,                                   //[Optional] The way (0 parellel, 1 recursive, default value is 1) to search UI components (slides container, loading screen, navigator container, arrow navigator container, thumbnail navigator container etc).
+                $PlayOrientation: 1,                                //[Optional] Orientation to play slide (for auto play, navigation), 1 horizental, 2 vertical, 5 horizental reverse, 6 vertical reverse, default value is 1
+                $DragOrientation: 1,                                //[Optional] Orientation to drag slide, 0 no drag, 1 horizental, 2 vertical, 3 either, default value is 1 (Note that the $DragOrientation should be the same as $PlayOrientation when $DisplayPieces is greater than 1, or parking position is not 0)
+              
+                $BulletNavigatorOptions: {                          //[Optional] Options to specify and enable navigator or not
+                    $Class: $JssorBulletNavigator$,                 //[Required] Class to create navigator instance
+                    $ChanceToShow: 2,                               //[Required] 0 Never, 1 Mouse Over, 2 Always
+                    $AutoCenter: 1,                                 //[Optional] Auto center navigator in parent container, 0 None, 1 Horizontal, 2 Vertical, 3 Both, default value is 0
+                    $Steps: 1,                                      //[Optional] Steps to go for each navigation request, default value is 1
+                    $Lanes: 1,                                      //[Optional] Specify lanes to arrange items, default value is 1
+                    $SpacingX: 8,                                   //[Optional] Horizontal space between each item in pixel, default value is 0
+                    $SpacingY: 8,                                   //[Optional] Vertical space between each item in pixel, default value is 0
+                    $Orientation: 1,                                //[Optional] The orientation of the navigator, 1 horizontal, 2 vertical, default value is 1
+                    $Scale: false                                   //Scales bullets navigator or not while slider scale
+                },
+
+                $ArrowNavigatorOptions: {                           //[Optional] Options to specify and enable arrow navigator or not
+                    $Class: $JssorArrowNavigator$,                  //[Requried] Class to create arrow navigator instance
+                    $ChanceToShow: 1,                               //[Required] 0 Never, 1 Mouse Over, 2 Always
+                    $AutoCenter: 2,                                 //[Optional] Auto center arrows in parent container, 0 No, 1 Horizontal, 2 Vertical, 3 Both, default value is 0
+                    $Steps: 1                                       //[Optional] Steps to go for each navigation request, default value is 1
+                }
+            };
+
+            //Make the element 'slider1_container' visible before initialize jssor slider.
+            $("#slider1_container").css("display", "block");
+            var jssor_slider1 = new $JssorSlider$("slider1_container", options);
+
+            //responsive code begin
+            //you can remove responsive code if you don't want the slider scales while window resizes
+            function ScaleSlider() {
+                var bodyWidth = document.body.clientWidth;
+                if (bodyWidth)
+                    jssor_slider1.$ScaleWidth(Math.min(bodyWidth, 1920));
+                else
+                    window.setTimeout(ScaleSlider, 30);
+            }
+            ScaleSlider();
+
+            $(window).bind("load", ScaleSlider);
+            $(window).bind("resize", ScaleSlider);
+            $(window).bind("orientationchange", ScaleSlider);
+            //responsive code end
+        });
+    </script>
+
+</body>
+</html>

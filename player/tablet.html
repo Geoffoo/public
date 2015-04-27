@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang='en-US'>
+<head>
+<meta charset='utf-8'>
+<title>Player | Zingg Music Lab</title>
+<script type='text/javascript' src='/js/jquery-1.11.2.min.js'></script>
+<script type='text/javascript' src='/js/jquery.cookie.js'></script>
+<script type='text/javascript' src='/js/jquery.storageapi.min.js'></script>
+<script type='text/javascript' src='/js/mediaelement-and-player.js'></script>
+<script type='text/javascript' src='/js/superagent.js'></script>
+<script type='text/javascript' src='/js/bootstrap.min.js'></script>
+<!-- ractive.js
+For production, use:    http://cdn.ractivejs.org/latest/ractive.min.js
+For IE8 support, use:   http://cdn.ractivejs.org/latest/ractive-legacy.min.js
+For edge features, use: http://cdn.ractivejs.org/edge/ractive.min.js
+-->
+<script type='text/javascript' src='/js/ractive.min.js'></script>
+<script type='text/javascript' src='/js/delorean.min.js'></script>
+<script type='text/javascript' src='/js/dispatcher.js'></script>
+<link rel='stylesheet' type='text/css' href='/css/bootstrap.min.css'>
+<link rel='stylesheet' type='text/css' href='/css/bootstrap-theme.css'>
+<link rel="stylesheet" type='text/css' href='/css/mediaelementplayer.css' />
+<link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700&subset=latin,latin-ext'>
+<style type='text/css'>
+body, td, th, .btn-channel {
+  font-family: 'Open Sans Condensed', Verdana, sans-serif;
+  font-size: 16px;
+  color: #cccccc;
+}
+body {
+  background-color: #000000;
+}
+.btn-pause {
+  width: 66px;
+  height: 66px;
+  margin: 5px 10px;
+  border: 0;
+  background: transparent url('/img/btnPauseUp.png') no-repeat;
+}
+.btn-next {
+  width: 32px;
+  height: 33px;
+  margin: 10px 0px;
+  border: 0;
+  background: transparent url('/img/btnNext.png') no-repeat;
+}
+.btn-channel {
+  width: 199px;
+  height: 54px;
+  border: 0;
+  background: transparent url('/img/btnChannelBlkUp.png') no-repeat;
+}
+td#menubar {
+  height: 30px;
+}
+td#metadata {
+  padding: 0px 10px 0px 10px;
+}
+
+/* mediaelement.js */
+.mejs-overlay-button {
+  display: none;
+}
+
+</style>
+</head>
+<body>
+
+<div class='container' id='main' />
+
+<!-- main ractive.js template -->
+<script id='main-tmpl' type='text/ractive'>
+
+<table align='center' cellpadding='0' width='608' height='340' background='/img/playerBg.png' id='bgShell'>
+  <tr><td id='menubar'>
+    Menu Bar |
+    <a href="/index.html">Welcome Page</a> |
+    <a href="#" on-click="logout">Sign Out</a>
+  </td></tr>
+  <tr><td>
+    <table align='center' cellpadding='10' width='604' id='logoHeader'>
+      <tr><td align='left'><img src='/img/zmlLogo.png' width='123' height='23' /></td></tr>
+      <tr><td align='left' id='flash'>{{>flash}}</td></tr>
+    </table>
+    <table width='604' height='77' align='center' cellpadding='0' cellspacing='0' 
+      background='/img/playerWindow.png' id='playerWindow'>
+      {{#with stores.player.store}}
+      <tr>
+        <td width='77' height='77' align='left'><button class='btn-pause' on-click='playPause' /></td>
+        <td width='247' align='left' valign='bottom'><button class='btn-next' on-click='skipSong' /></td>
+        <td id='metadata' width='280' align='left' valign='middle'>{{channel_data.active_channel.name}}
+          <br/>Now: {{player_data.now_playing.full_title}}
+          <br />Next: {{player_data.coming_up.full_title}}
+        </td>
+      </tr>
+      {{/with}}
+    </table>
+    <table align='center' cellpadding='0' cellspacing='2' id='btnChannel'>
+      {{#with stores.player.store.channel_data}}
+      <tr>
+        <td><button class='btn-channel' id='channel-1' data-channel-path='{{channels.1.path}}'
+          on-click='selectChannel'>{{channels.1.name}}</button></td>
+        <td><button class='btn-channel' id='channel-2' data-channel-path='{{channels.2.path}}'
+          on-click='selectChannel'>{{channels.2.name}}</button></td>
+        <td><button class='btn-channel' id='channel-3' data-channel-path='{{channels.3.path}}'
+          on-click='selectChannel'>{{channels.3.name}}</button></td>
+      </tr>
+      <tr>
+        <td><button class='btn-channel' id='channel-4' data-channel-path='{{channels.4.path}}'
+          on-click='selectChannel'>{{channels.4.name}}</button></td>
+        <td><button class='btn-channel' id='channel-5' data-channel-path='{{channels.5.path}}'
+          on-click='selectChannel'>{{channels.5.name}}</button></td>
+        <td><button class='btn-channel' id='channel-6' data-channel-path='{{channels.6.path}}'
+          on-click='selectChannel'>{{channels.6.name}}</button></td>
+      </tr>
+      <tr>
+        <td align='center'><a href='/player/channel-select.html'>Manage Music Channels</a></td>
+        <td><button class='btn-channel' id='channel-a' data-channel-path='{{channels.0.path}}'
+          on-click='selectChannel'>{{channels.0.name}}</button></td>
+        <td align='center'><a href='/player/channel-mix.html'>Mix Your Channels</a></td>
+      </tr>
+      {{/with}}
+      <tr>
+        <td colspan='3' id='player-box'>
+          {{#if media_type == 'audio' }}
+          <audio id='aplayer' width='320' height='30'><zmlplayer player_el='aplayer' src_url='{{intro_url}}' /></audio>
+          {{/if}}
+          {{#if media_type == 'video' }}
+          <video id='vplayer' width='320' height='30'><zmlplayer player_el='vplayer' src_url='{{intro_url}}' /></video>
+          {{/if}}
+        </td>
+      </tr>
+      <tr>
+        <td colspan='3' id='player-debug'>User agent: {{user_agent}}<br/>
+        Media type: {{media_type}}<br/>
+        Media format: {{media_format}}<br/>
+        Source url: {{src_url}}<br/>
+        Player mode: {{player_mode}}
+        </td>
+      </tr>
+    </table>
+  </td></tr>
+</table>
+
+<!-- inline partials -->
+<!-- {{>flash}} -->
+{{#each stores.flash.store.messages:i}}
+  <div id='flash-{{i}}' class='flash flash-{{this.level}}'>{{{html}}}</div>
+{{/each}}
+<!-- {{/flash}} -->
+</script>
+
+<script id='zmlplayer-core' type='text/ractive'>
+<source type='application/x-mpegURL' src='{{src_url}}' />
+<object id='flashplayer' width='320' height='30' type='application/x-shockwave-flash' 
+  data='/player/flashmediaelement.swf'>
+  <param name='movie' value='/player/flashmediaelement.swf' />
+  <param name='flashvars' value='controls=true&file={{src_url}}' />
+</object>
+</script>
+
+<script type='text/javascript'>
+// Change version when UI or mejs is updated
+var ZML_APP_ID      = 'com.zinggmusiclab.meplayer';
+var ZML_APP_VERSION = '0.1.2';
+
+/*
+ * For information on configuring mediaelement.js player see 
+ *  http://mediaelementjs.com/#api
+ *
+ */
+
+MEPlayer = Ractive.extend({
+  template: "#zmlplayer-core",
+  data: {
+    meplayer:         null,
+    ready:            false,
+    stream_path:      null,
+    index_file:       null,
+    now_playing_loop: null
+  },
+  isolated: false,
+  onrender: function() {
+    var self = this;
+    var opts = {
+      startVolume: 0.8,
+      loop:        false,
+      // Order of controls for the control bar 
+      // Note bug in CSS means last feature control may not display correctly
+      // So don't put 'volume' last
+      features:    [ 'playpause', 'volume' ],
+      audioVolume: 'horizontal',
+      videoVolume: 'horizontal',
+      enableKeyboard: true,
+      plugins:     [ 'flash' ],
+      pluginPath:  '/player/',
+      flashName:   'flashmediaelement.swf',
+      // Interval in ms for Flash updates: larger number is less accurate, 
+      // but less strain on plugin->JavaScript bridge
+      timerRate:   250,
+      // Don't use the big video overlay button - also hide it in css!
+      clickToPlayPause:   false,
+      alwaysShowControls: true,
+      alwaysShowHours:    false,
+      enableAutosize:     false,
+      // If enabled, Flash window will show debugging info according to other debug flags
+      enablePluginDebug:  false,
+      // Options taken from flashls.swc - not sure of their effect
+      hls_error:   true,
+      hls_warn:    true,
+      hls_info:    true,
+      hls_debug:   true,
+      hls_debug2:  true,
+      // method that fires when the Flash or Silverlight object is ready
+      success: function( media, node, player ) {
+        console.log( 'meplayer ready, mode: ' + media.pluginType );
+        
+        var ractive = self.component.root;
+        ractive.set( 'player_mode', media.pluginType );
+
+        self.set( 'ready', true );
+        // play the intro
+        self.play();
+      },
+      // fires when a problem is detected
+      error: function( error ) {
+        // TODO detect if Adobe Flash Player is not installed
+        console.log( 'meplayer error ' + error.description ); 
+      }
+    };
+    var player_sel = '#' + this.data.player_el;
+    console.log( 'creating MediaElementPlayer at ' + player_sel );
+    var mejs = new MediaElementPlayer( player_sel, opts );
+    this.set( 'meplayer', mejs );
+
+    player_sel = $( player_sel );
+    player_sel.on( 'volumechange', function( event ) {
+      console.log( event.type );
+    });
+    player_sel.on( 'loadedmetadata', function( event ) {
+      console.log( event.type );
+    });
+    player_sel.on( 'loadeddata', function( event ) {
+      console.log( event.type );
+    });
+    player_sel.on( 'canplay', function( event ) {
+      console.log( event.type );
+    });
+    player_sel.on( 'play', function( event ) {
+      console.log( event.type );
+    });
+    player_sel.on( 'playing', function( event ) {
+      console.log( event.type );
+    });
+    // player_sel.on( 'timeupdate', function( event ) {
+    //   console.log( event.type );
+    // });
+    player_sel.on( 'pause', function( event ) {
+      console.log( event.type );
+    });
+    player_sel.on( 'ended', function( event ) {
+      console.log( event.type );
+    });
+    player_sel.on( 'progress', function( event ) {
+      console.log( event.type );
+    });
+    player_sel.on( 'seeked', function( event ) {
+      console.log( event.type );
+    });
+
+    var ractive = this.component.root;
+    ractive.registerPlayer();
+  },
+  readyPlayer: function() {
+     return ( this.data.meplayer && this.data.meplayer.media ) ? this.data.meplayer : null;
+  },
+  setSrc: function( url ) {
+    var player = this.readyPlayer();
+    if ( player ) { player.setSrc( url ); }
+  },
+  load: function() {
+    var player = this.readyPlayer();
+    if ( player ) { player.load(); }
+  },
+  pause: function() {
+    var player = this.readyPlayer();
+    if ( player ) { player.pause(); }
+  },
+  play: function() {
+    var player = this.readyPlayer();
+    if ( player ) { player.play(); }
+  },
+  paused: function() {
+    var player = this.readyPlayer();
+    return player ? player.media.paused : false;
+  },
+  setCurrentTime: function( time ) {
+    var player = this.readyPlayer();
+    if ( player ) { player.setCurrentTime( time ); }
+  },
+  checkStreamChanged: function( stream ) {
+    if ( stream && stream.path && stream.index_file ) {
+      if ( this.data.stream_path == stream.path &&
+        this.data.index_file == stream.index_file ) {
+        // console.log( 'on change - zmlplayer stream ' + stream.path + ' already started' );
+      } else {
+        console.log( 'zmlplayer check - setting stream to ' + stream.path );
+        this.setStream( stream );
+        return stream;
+      }
+    } else {
+      var ractive = this.component.root;
+      if ( !ractive.isLoading() ) {
+        console.log( 'zmlplayer check - see if we have a stream to start' );
+        ractive.startStream();
+      }
+    }
+    return null;
+  },
+  setStream: function( stream ) {
+    if ( this.data.meplayer ) {
+      if ( this.data.now_playing_loop ) {
+        clearInterval( this.data.now_playing_loop );
+        this.set( 'now_playing_loop', null );
+      }
+      var src = null;
+      if ( stream ) {
+        var metadata_file = stream.metadata_file;
+        if ( metadata_file ) {
+          PlayerActions.getNowPlaying( metadata_file );
+          this.set( 'now_playing_loop', setInterval( function() {
+            PlayerActions.getNowPlaying( metadata_file );
+          }, 5000) );
+        }
+        src = stream.index_file;
+        console.log( 'zmlplayer - src will be ' +  src );
+        this.set( 'stream_path', stream.path );
+        this.set( 'index_file', src );
+      }
+      this.pause();
+      this.setCurrentTime( 0 );
+      if ( src ) {
+        this.setSrc( src );
+        this.load();
+        this.play();
+      }
+    }
+  }
+});
+
+
+var ractive = new Ractive({
+  el: 'main',
+  template: '#main-tmpl',
+  magic: false,
+  data: {
+    user_agent:   null,
+    media_type:   null,
+    media_format: null,
+    intro_url:    null,
+    src_url:      null,
+    player_mode:  'loading',
+    stores: {
+      auth: authStore,
+      flash: flashStore,
+      player: playerStore
+    }
+  },
+  components: {
+    zmlplayer: MEPlayer
+  },
+  oninit: function() {
+    setupRactiveStores( this );
+    this.initForUserAgent();
+    AuthActions.loadAuthToken();
+    // PlayerActions.loadChannels();
+    // this.updateChannels( false );
+    FlashActions.showFlash();
+  },
+  initForUserAgent: function() {
+    var media_type = 'video';
+    var media_format = 'ts';
+    var user_agent =  window.navigator.userAgent || 'unknown; ractive';
+    var chrome  = false;
+    var safari  = false;
+    var mac     = false;
+    var ios     = false;
+    var android = false;
+    if ( user_agent.match( /Chrome/ ) )            { chrome  = true; }
+    if ( user_agent.match( /Version\/.+Safari/ ) ) { safari  = true; }
+    if ( user_agent.match( /\(Macintosh;/ ) )      { mac     = true; }
+    if ( user_agent.match( /\((iPad|iPhone);/ ) )  { ios     = true; }
+    if ( user_agent.match( /Android/ ) )           { android = true; }
+    if ( safari && ios ) {
+      media_format = 'aac';
+      media_type = 'audio';
+    } else {
+      media_format = 'ts';
+      media_type = 'video';
+    }
+    var intro_url = '/hls/intro/intro-' + media_format + '.m3u8';
+    this.set( 'user_agent',   user_agent );
+    this.set( 'media_format', media_format );
+    this.set( 'intro_url',    intro_url ); 
+    this.set( 'media_type',   media_type );
+  },
+  updateChannels: function( force ) {
+    var token = this.get( 'stores.auth.store.user_data.token.value' );
+    if ( token ) {
+      if ( !force ) {
+        var channels = this.get( 'stores.player.store.channel_data.channels' );
+        force = !channels || channels.length < 6;
+        console.log( 'no channels - will update' );
+      }
+      if ( force ) {
+        PlayerActions.updateChannels( token, this.get( 'media_format' ) );
+      }
+    }
+  },
+  onchange: function() {
+    // See if player is set up, but not started
+    // If we have an active channel, start it up
+    var zmlplayer = this.findComponent( 'zmlplayer' );
+    if ( zmlplayer && zmlplayer.data.meplayer ) {
+      var stream = this.get( 'stores.player.store.player_data.stream' );
+      stream = zmlplayer.checkStreamChanged( stream );
+      if ( stream ) {
+        this.set( 'src_url', stream.index_file );
+      }
+    } else {
+      // console.log( 'on change - zmlplayer not initialized' );
+    }
+  },
+  registerPlayer: function() {
+    var token = this.get( 'stores.auth.store.user_data.token.value' );
+    if ( !token ) {
+      console.log( 'cannot register player - not logged in' );
+      return false;
+    }
+    var player_id = this.get( 'stores.player.store.player_data.player.id' )
+    var player_data = {
+      media_format:  this.data.media_format,
+      user_agent:    this.data.user_agent,
+      app_id:        ZML_APP_ID,
+      app_version:   ZML_APP_VERSION,
+      player_id:     player_id
+    }
+    if ( player_id ) {
+      console.log( 'registering existing player ' + player_id );
+    } else {
+      console.log( 'registering new player' );
+    }
+    PlayerActions.registerPlayer( token, player_data );
+    return true;
+  },
+  isLoading: function() {
+    var loading = this.get( 'stores.player.store.player_data.loading.current' );
+    console.log( 'currently loading ' + loading.path + ' at ' + loading.time );
+    return loading.time;
+  },
+  getStreamAndPlayerData: function() {
+    var token = this.get( 'stores.auth.store.user_data.token.value' );
+    if ( !token ) {
+      console.log( 'not logged in' );
+      return false;
+    }
+    var player_id = this.get( 'stores.player.store.player_data.player.id' );
+    if ( !player_id ) {
+      console.log( 'no player id' );
+      return false;
+    }
+    var channel_path = this.get( 'stores.player.store.channel_data.active_channel.path' );
+    if ( !channel_path ) {
+      console.log( 'no active channel path' );
+      return false;
+    }
+    var stream_path = channel_path + '-' + this.data.media_format;
+    return { 
+      token:       token,
+      stream_path: stream_path,
+      player_data: {
+        player_id:    player_id,
+        media_format: this.data.media_format,
+        user_agent:   this.data.user_agent
+      }
+    };
+  },
+  startStream: function() {
+    // possible race condition here
+    // loadingStream sets "loading", but may be called again before data 
+    // can be read, so stream gets started twice  
+    var data = this.getStreamAndPlayerData();
+    if ( !data ) { return; }
+    console.log( 'startStream ' + data.stream_path );
+    PlayerActions.loadingStream( data.stream_path );
+    PlayerActions.startStream( data.token, data.stream_path, data.player_data );
+  },
+  skipSong: function() {
+    var data = this.getStreamAndPlayerData();
+    if ( !data ) { return; }
+    PlayerActions.skipSong( data.token, data.stream_path, data.player_data );
+  }
+});
+
+ractive.on( 'playPause', function( event ) {
+  var zmlplayer = this.findComponent( 'zmlplayer' );
+  if ( zmlplayer && !zmlplayer.paused() ) {
+    zmlplayer.pause(); 
+    // TODO: update button graphic
+  } else {
+    zmlplayer.play(); 
+    // TODO: update button graphic
+  }
+  return false;
+});
+
+ractive.on( 'skipSong', function( event ) {
+  this.skipSong();
+  return false;
+});
+
+ractive.on( 'selectChannel', function( event ) {
+  var channel = $( event.node ).attr( 'data-channel-path' );
+  var old_channel = this.get( 'stores.player.store.channel_data.active_channel.path' );
+  if ( true /* channel != old_channel */ ) {
+    console.log( 'selectChannel - clearing player and selecting channel ' + channel );
+    PlayerActions.selectChannel( channel, this.data.media_format );
+    this.startStream();
+  } else {
+    console.log( 'selectChannel - same as active_channel; ignoring' );
+  }
+  return false;
+});
+
+ractive.on( 'logout', function( event ) {
+  var e = event.original;
+  if ( e ) { e.preventDefault; e.stopPropagation; }
+  AuthActions.logout( '/index.html' );
+  return false;
+});
+
+</script>
+</body>
+</html>

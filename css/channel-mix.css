@@ -1,0 +1,115 @@
+/* From Geoff-new */
+body {
+  background-color: #FFFFFF;
+}
+
+#container {
+  background-color: #333333;
+  position: relative;
+  height: auto;
+}
+
+#channel-mix {
+  padding-top: 20px;
+}
+
+.block_1_bg {
+  padding-bottom: 30px;
+}
+
+.block_level_content_holder {
+  padding-bottom: 10px;
+}
+
+.box-center {
+  /* Firefox */
+  display: -moz-box;
+  -moz-box-pack: center;
+  -moz-box-align: center;
+
+  /* Safari and Chrome */
+  display: -webkit-box;
+  -webkit-box-pack: center;
+  -webkit-box-align: center;
+
+  /* W3C */
+  display: box;
+  box-pack: center;
+  box-align: center;
+}
+
+.form-title {
+  text-align: start;
+}
+
+table.mix-data td {
+  vertical-align: middle;
+}
+
+.mix-name-container {
+  margin: 5px;
+}
+
+li.channel {
+  list-style-type: none;
+  height: 40px;
+  width: 380px;
+  text-align: left;
+  line-height: 1.2em;
+  padding: 5px;
+  margin: 5px;
+  font-family: "RobotoRegular";
+  font-size: 1.1em;
+  border: 2px solid #F90;
+  color: #003;
+  background-color: #FFFFFF;
+}
+
+li.channel span.title {
+  display: inline-block;
+  margin: 0 10px 0 0;
+  width: 200px;
+}
+
+li.channel button.sample {
+  float: right;
+  width: 64px;
+  height: 35px;
+  border: 0;
+  padding: 0;
+  background-image: url('../ZMLPlayer/btnSamplePlayUpw.png');
+  background-repeat: no-repeat;
+}
+
+li.channel input.slider {
+  width: 150px;
+  float: right;
+}
+
+li.channel audio {
+  display: none;
+}
+
+.cmix_button {
+  padding: 10px 0px 10px 0px;
+}
+
+.cmix_button button {
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+  width: 160px;
+  top: 10px;
+  font-family: "RobotoRegular";
+  font-weight: 500;
+  font-size: 19px;
+  padding: 5px 10px 5px 10px;
+  color: #ffffff;
+  text-decoration: none;
+  background-color: #036;
+}
+
+.cmix_button button:hover {
+  text-decoration: none;
+  background-color: #F90;
+}

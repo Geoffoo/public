@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang='en-US'>
+<head>
+<meta charset='utf-8'>
+<title>Welcome | Zingg Music Lab</title>
+<script type='text/javascript' src='../js/jquery-1.11.2.min.js'></script>
+<script type='text/javascript' src='../js/jquery.cookie.js'></script>
+<script type='text/javascript' src='../js/jquery.storageapi.min.js'></script>
+<script type='text/javascript' src='../js/bootstrap.min.js'></script>
+<script type='text/javascript' src='../js/ractive.min.js'></script>
+<script type='text/javascript' src='../js/delorean.min.js'></script>
+<script type='text/javascript' src='../js/dispatcher.js'></script>
+<link rel='stylesheet' type='text/css' href='../css/bootstrap.min.css' />
+<link rel='stylesheet' type='text/css' href='../css/bootstrap-theme.css' />
+<link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700&subset=latin,latin-ext'>
+<style type='text/css'>
+body, td, th, .btn-channel {
+  font-family: 'Open Sans Condensed', Verdana, sans-serif;
+  font-size: 16px;
+  color: #333333;
+}
+body {
+  background-color: #ffffff;
+}
+</style>
+</head>
+<body>
+<div class='container' id='main' />
+
+<!-- main ractive.js template -->
+<script id='main-tmpl' type='text/ractive'>
+<div class='row col-sm-12' id='flash'>{{>flash}}</div>
+<div class='row col-sm-12' id='header'>{{>header}}</div>
+<div class='row col-sm-12' id='content'>
+{{#if stores.auth.store.user_data.token.value}}
+	<p class='logged-in'><a href='../player/tablet.html'>Start playing now!</a></p>
+{{else}}
+	<p class='logged-out'><a href='/register.html'>Sign Up</a> or <a href='/login.html'>Sign In</a></p>
+{{/if}}
+</div>
+<div class='row col-sm-12' id='navigation'>{{>navigation}}</div>
+
+<!-- inline partials -->
+<!-- {{>flash}} -->
+{{#each stores.flash.store.messages:i}}
+  <div id='flash-{{i}}' class='flash flash-{{this.level}}'>{{{html}}}</div>
+{{/each}}
+<!-- {{/flash}} -->
+
+<!--{{>header}}-->
+{{#with stores.auth.store.user_data}}
+{{#if user.username}}
+	<h1>Hello <span id='user-title'>{{user.username}}</span></h1>
+	<div class='row col-sm-12 logged-in'>
+		<p>Your login token is <span id='jwt'>{{ shortToken() }}</span></p>
+	</div>
+{{else}}
+	<div class='row col-sm-12 logged-out'>
+		<p>You are not signed in.</p>
+	</div>
+{{/if}}
+{{/with}}
+<!--{{/header}}-->
+
+<!--{{>navigation}}-->
+{{#with stores.auth.store.user_data}}
+{{#if user.username}}
+	<p class='logged-in'><a href='/account.html'>My Account</a></p>
+	<p class='logged-in'><a id='logout-btn' on-click='logout' href='#'>Sign Out</a></p>
+{{else}}
+	<p class='logged-out'><a href='/register.html'>Sign Up</a></p>
+	<p class='logged-out'><a href='/login.html'>Sign In</a></p>
+{{/if}}
+{{/with}}
+<!--{{/navigation}}-->
+</script>
+
+<script type='text/javascript'>
+
+var ractive = new Ractive({
+  el: 'main',
+  template: '#main-tmpl',
+  magic: false,
+  data: {
+    stores: {
+      auth: authStore,
+      flash: flashStore,
+      player: playerStore
+    },
+    shortToken: function() {
+    	return (this.data.stores.auth.store.user_data.token.value || '').slice(0, 6);
+    }
+  },
+  oninit: function() {
+    setupRactiveStores( this );
+    AuthActions.loadAuthToken();
+    FlashActions.showFlash();
+  }
+});
+
+ractive.on( 'logout', function( event ) {
+  var e = event.original;
+  if ( e ) { e.preventDefault; e.stopPropagation; }
+  AuthActions.logout();
+  return false;
+});
+
+</script>
+</body>
+</html>

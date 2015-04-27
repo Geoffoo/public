@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Native HLS Streaming</title>
+<script type="text/javascript" src="../js/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" src="../js/jquery.cookie.js"></script>
+<script type="text/javascript" src="../js/jquery.storageapi.min.js"></script>
+<script type="text/javascript" src="../js/jquery.storage.flash.js"></script>
+<script type="text/javascript" src="/assets/jplayer/dist/jplayer/jquery.jplayer.min.js"></script>
+<script type="text/javascript" src="/assets/jplayer/dist/add-on/jplayer.playlist.min.js"></script>
+<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+<link rel="stylesheet" type="text/css" href="../css/jplayer/skin/pink.flag/jplayer.pink.flag.css" />
+<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="../css/bootstrap-theme.css" />
+</head>
+<body>
+<div class="container">
+	<div class="row col-sm-12" id="flash">
+		<span id="flash-error"></span>
+		<span id="flash-alert"></span>
+		<span id="flash-notice"></span>
+	<div>
+
+	<div class="row col-sm-12" id="header">
+		<h1>Hello <span id="user-title"></span></h1>
+		<div class="row col-sm-12 logged-in">
+			<p>Your login token is<br/>
+				<span id="jwt"></span></p>
+		</div>
+		<div class="row col-sm-12 logged-out">
+			<p>You are not signed in.</p>
+		</div>
+	</div>
+
+	<div class="logged-in">
+		<div id="jquery_jplayer_1" class="jp-jplayer"></div>
+		<div id="jp_container_1" class="jp-audio row col-sm-offset-4 col-sm-4" role="application" aria-label="media player">
+
+			<div class="jp-type-single">
+				<div class="jp-gui jp-interface">
+					<div class="jp-volume-controls">
+						<button class="jp-mute" role="button" tabindex="0">mute</button>
+						<button class="jp-volume-max" role="button" tabindex="0">max volume</button>
+						<div class="jp-volume-bar">
+							<div class="jp-volume-bar-value"></div>
+						</div>
+					</div>
+					<div class="jp-controls-holder">
+						<div class="jp-controls">
+							<button class="jp-play" role="button" tabindex="0">play</button>
+							<button class="jp-stop" role="button" tabindex="0">stop</button>
+						</div>
+						<div class="jp-progress">
+							<div class="jp-seek-bar">
+								<div class="jp-play-bar"></div>
+							</div>
+						</div>
+						<div class="jp-current-time" role="timer" aria-label="time">&nbsp;</div>
+						<div class="jp-duration" role="timer" aria-label="duration">&nbsp;</div>
+						<div class="jp-toggles">
+							<button class="jp-repeat" role="button" tabindex="0">repeat</button>
+						</div>
+					</div>
+				</div>
+				<div class="jp-details">
+					<div id="jp-title" class="jp-title" aria-label="title">&nbsp;</div>
+				</div>
+				<div class="jp-no-solution">
+					<span>Update Required</span>
+					To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
+				</div>
+			</div>
+
+			<!-- this is where the playlist information will be filled in -->
+			<div class="jp-details">
+				<div class="jp-title">Coming Up:&nbsp;<span id="jp-next"></span></div>
+			</div>
+
+		</div>
+		<!-- skip song -->
+		<div class="row col-sm-offset-4 col-sm-4">
+			<button id="skip" role="button" tabindex="0">Skip Song</button>
+		</div>
+	</div>
+
+	<div class="row col-sm-12" id="navigation">
+		<p class="logged-in"><a href="/v1/index.html">ME Player - Flash</a></p>
+		<p class="logged-in"><a href="/account.html">My Account</a></p>
+		<p class="logged-in"><a id="logout-btn" href="/logout.html">Sign Out</a></p>
+		<p class="logged-out"><a href="/register.html">Sign Up</a></p>
+		<p class="logged-out"><a href="/v1/login.html">Sign In</a></p>
+	</div>
+</div>
+
+<script type="text/javascript">
+// start CDATA <![CDATA[
+
+function redirect( uri_path ) {
+	if (!window.location.origin) {
+	  window.location.origin = window.location.protocol + "//" + 
+		window.location.hostname + 
+		(window.location.port ? ':' + window.location.port: '');
+	}
+	window.location.href = window.location.origin + uri_path;
+}
+
+var stream_id;
+var stream_base_url = 'http://127.0.0.1:9009/hls/stream/summer_stream/';
+var api_base_url    = 'http://127.0.0.1:9009/api/v1/streams/';
+var zml_hls_stream = {
+	media: { 
+		m3u8a: stream_base_url + 'stream-ts.m3u8',
+		poster: null
+	},
+	supplied: 'm3u8a',
+	is_stream: true,
+	ready: false
+};
+
+
+function get_now_playing() {
+	var stats_url = stream_base_url + 'now-playing-ts.json';
+	$.getJSON( stats_url, function( data ) {
+		stream_id = data.now_playing.stream_id;
+		var song_info = data.now_playing.artist + ' - ' + data.now_playing.title;
+		var coming_up = data.coming_up.artist + ' - ' + data.coming_up.title;
+		var current_time = $.jPlayer.convertTime( data.now_playing.start_time );
+		var duration = $.jPlayer.convertTime( data.now_playing.song_duration );
+		$( '#jp-title' ).text( song_info );
+		$( '#jp-next' ).text( coming_up );
+		/* $( '.jp-current-time' ).text( current_time ); */
+		$( '.jp-duration' ).text( duration );
+	});
+}
+
+/*
+ * For information on configuring jPlayer see 
+ *   http://jplayer.org/latest/developer-guide
+ *
+ * Audio Formats
+ *   The essential jPlayer formats (mp3 or m4a for audio and m4v for video) 
+ * must also conform with the codecs supported by the Adobe Flash plugin.	
+ *
+ * Audio formats supported by jPlayer are:
+ *   mp3
+ *   m4a
+ *   oga
+ *   webma
+ *   wav
+ *   fla
+ *   rtmpa
+ *   m3u8a
+ *   m3ua
+ *   flac
+ *
+ * Live Streaming
+ *   See http://jplayer.org/latest/demo-08/
+ *
+ * Options for an mp3 file
+ *
+ * var options_file = {
+ *   smoothPlayBar: true,
+ *   remainingDuration: true,
+ *   toggleDuration: true
+ * };
+ *
+ * Settings for Wowza-generated stream
+ * 
+ * var zml_streamguys_8020 = {
+ *   media: {
+ *     title: 'Soft Rock',
+ *     m4a: 'http://zml-encoder.streamguys.org:8020/;*.aac'
+ *   },
+ *   supplied: 'm4a, mp3'
+ * };
+ */
+function setup_jplayer_basic() {
+	$( '#jquery_jplayer_1' ).jPlayer( {
+    ready: function () {
+			console.log( 'jplayer ready, calling setMedia ' + zml_hls_stream.media.m3u8a );
+			zml_hls_stream.ready = true;
+      $( this ).jPlayer( 'setMedia', zml_hls_stream.media );
+    },
+		pause: function() {
+			console.log( 'jplayer pause' );
+			if ( zml_hls_stream.is_stream ) {
+				zml_hls_stream.ready = false;
+				$( this ).jPlayer( 'clearMedia' );
+			}
+		},
+		error: function(event) {
+			console.log( 'jplayer error ' + event.jPlayer.error.type );
+			if ( zml_hls_stream.is_stream && zml_hls_stream.ready && 
+				zml_hls_stream.media.m3u8a &&
+				event.jPlayer.error.type === $.jPlayer.error.URL_NOT_SET ) {
+				/* Setup the media stream again and play it. */
+				console.log( 'jplayer error, calling setMedia ' + zml_hls_stream.media.m3u8a );
+				$( this ).jPlayer( 'setMedia', zml_hls_stream.media ).jPlayer( 'play' );
+			}
+		},
+    cssSelectorAncestor: '#jp_container_1',
+    swfPath: '/assets/jplayer/dist/jplayer',
+		supplied: zml_hls_stream.supplied,
+		preload: 'none',
+    useStateClassSkin: true,
+    autoBlur: false,
+    keyEnabled: true,
+		wmode: 'window'
+	});
+}
+
+function logout_action( e ) {
+	e.preventDefault();
+
+	var storage = $.localStorage;
+	storage.remove( 'jwt' );
+	storage.remove( 'user' );
+
+	flash_set( 'notice', 'You are now logged out.' );
+	redirect( '/index.html' );	
+}
+
+$( document ).ready( function() { 
+	flash_messages();
+
+	$( '#logout-btn' ).click( logout_action );
+	
+	$( '#skip' ).click( function( e ) {
+		e.preventDefault;
+		$.post( api_base_url + stream_id + '/skip' )
+			.done( function() {
+				if (data.stream && data.stream.index_file) {
+					zml_hls_stream.media.m3u8a = data.stream.index_file;
+					
+					var player = $( '#jquery_jplayer_1' );
+					player.jPlayer( 'stop' );
+					player.jPlayer( 'clearMedia' );
+					player.jPlayer( 'setMedia', zml_hls_stream.media );
+					player.jPlayer( 'play' );
+				}
+			});
+	});
+
+	var storage = $.localStorage;
+	var token = storage.get( 'jwt' );
+	var user = storage.get( 'user' );
+	if ( !token || !usern ) {
+		$( '.logged-in' ).hide();
+		$( '.logged-out' ).show();
+		/* set up a flash message ('Please log in') */
+	} else {
+		$( '#user-title' ).text( user.username );
+		$( '#jwt' ).text( token.value );
+
+		setup_jplayer_basic();
+		setInterval( get_now_playing, 2000 );
+		get_now_playing();
+
+		$( '.logged-in' ).show();
+		$( '.logged-out' ).hide();
+	}
+});
+
+// end CDATA ]]>
+</script>
+</body>
+</html>

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+
+<!-- title and meta -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="Website desc. goes here.">
+<title>Zingg Music Lab - Manage Music Channels</title>
+
+<!--[if IE]>
+    <script src="js/html5shiv.js"></script> 
+    <style type="text/css">
+    .clear {
+      zoom: 1;
+      display: block;
+    }
+    </style>
+<![endif]-->
+
+<script src="js/jquery-1.11.2.min.js"></script>
+
+<!-- css General -->
+<link rel="stylesheet" href="css/base3.css">
+<link rel="stylesheet" href="css/style3.css">
+<link rel="stylesheet" href="css/channel-select.css">
+
+<!-- js -->
+<script>
+    $(document).ready(function(){
+        $("#nav-mobile").html($("#nav-main").html());
+        $("#nav-trigger span").click(function(){
+            if ($("nav#nav-mobile ul").hasClass("expanded")) {
+                $("nav#nav-mobile ul.expanded").removeClass("expanded").slideUp(250);
+                $(this).removeClass("open");
+            } else {
+                $("nav#nav-mobile ul").addClass("expanded").slideDown(250);
+                $(this).addClass("open");
+            }
+        });
+    });
+</script>
+
+<script async src="js/modernizr.js"></script>
+<script async src="js/tabs.js"></script>
+<script async src="js/core.js"></script>
+
+<script>
+$(document).ready(function () {
+
+    var activeDiv = 1;
+    showDiv(activeDiv);
+    var timer = setInterval(changeDiv, 9000);
+
+
+    function changeDiv() {
+        activeDiv++;
+        if (activeDiv == 6) {
+            activeDiv = 1;
+        }
+        showDiv(activeDiv);
+    }
+
+    function showDiv(num) {
+        $('div.display').hide("slow");
+        $('#div' + num).fadeToggle("slow");
+    }
+});
+</script>
+<style type="text/css">
+#channel-select-txt {
+	text-align: left;
+}
+body,td,th {
+	font-family: latoRegular, sans-serif;
+}
+</style>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+
+<body>
+<div id="wrapper">
+  <div id="main">
+    <!-- Begin Top Bar (Discount Coupon / Buy Ticket)  -->
+    <!-- Begin Nav Container -->
+    <div class="container">
+      <div class="inner_container">
+        <div id="nav-trigger">
+          <span><img src="img/zingg_logo2.png" width="162" height="31"><br>Menu</span>
+        </div>
+        <nav id="nav-main">
+          <div class="logo">
+            <a href="index.html"><img src="img/zingg_logo.png" alt="Zingg Music Lab"></a>
+          </div>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="basic.html">ZML Basic</a></li>
+            <li><a href="enterprise.html">ZML Enterprise</a></li>
+            <li><a href="music.html">The Music</a></li>
+            <li><a href="clients.html">Our Clients</a></li>
+            <!-- <li><a href="index.htm" class="home">Home</a></li>-->
+            <li class="login"><a href="login.html" style="margin-left:20px;">LOGIN</a></li>
+          </ul>
+        </nav>
+        <nav id="nav-mobile">
+          <div class="logo">
+            <a href="index.html"><img src="img/zingg_logo.png" alt="Zingg Music Lab"></a>
+          </div>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="basic.html">ZML Basic</a></li>
+            <li><a href="enterprise.html">ZML Enterprise</a></li>
+            <li><a href="music.html">The Music</a></li>
+            <li><a href="clients.html">Our Clients</a></li>
+            <!-- <li><a href="index.htm" class="home">Home</a></li>-->
+            <li class="login"><a href="login.html" style="margin-left:20px;">LOGIN</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <!-- End Nav Container -->
+    <!-- Begin Main Content Container -->
+    <div id="container" class="block_1_bg">
+      <div class="top_offset">
+        <div class="block_level_content_holder" id="block-1">
+          <div id='channel-bg' class='box-center'>
+            <div id="channel-select">
+            <div id="channel-select-txt">
+              
+              <h1 style="text-align:center; margin-bottom: 15px; font-weight: bold;">Choose Your Music from 40 Channels</h1>
+              <p>Each  curated channel includes hundreds of songs that don&rsquo;t repeat for over 24 hours.<br />
+             Choose your favorite 6 channels from 40 music channels.<br />
+ Tap the TOP button to move a channel to the top of the list or drag the channel boxes to reorder them.<br />
+Tap the Sample button to play a sample track.<br />
+The top 6 channels will be used for your player and for custom mixes.<br />
+Tap the Save Changes button when you&rsquo;re done.</p>
+              <div class="cselect_buttons">
+                <button type="submit" class="btn btn-default">Refresh</button>
+                <button type="submit" class="btn btn-default">Save Changes</button>
+              </div>
+              </div>
+
+              <ul>
+                <li class="channel channel-0" draggable="true"><span class="title">: 4679</span></li>
+
+                <li class="channel channel-1" draggable="true">
+                <img src="ZMLPlayer/btn_top.png" alt="Move to Top" width="35" height="35" valign="middle" align="left">
+                &nbsp;&nbsp;&nbsp;<span class="title">Top Billboard Hits</span>
+                <span class="description"> - Pop, Country, And Hiphop From The Billboard Top 200</span>
+                <!--<audio class="sample" src="sample.mp3" controls=""></audio>-->
+                <img src="ZMLPlayer/btnSamplePlayUpw.png" alt="Play Sample" width="64" height="35" valign="middle" align="right"></li>
+                
+                <li class="channel channel-2" draggable="true">
+                <img src="ZMLPlayer/btn_top.png" alt="Move to Top" width="35" height="35" valign="middle" align="left">
+                &nbsp;&nbsp;&nbsp;<span class="title">Pop Contemporary - Pop Songs From The Billboard Top 200</span>
+                <!--<audio class="sample" src="sample.mp3" controls=""></audio>-->
+                <img src="ZMLPlayer/btnSamplePlayUpw.png" alt="Play Sample" width="64" height="35" valign="middle" align="right"></li>
+                
+                <li class="channel channel-3" draggable="true">
+                <img src="ZMLPlayer/btn_top.png" alt="Move to Top" width="35" height="35" valign="middle" align="left">
+                &nbsp;&nbsp;&nbsp;<span class="title">Today's Country- Contemporary Country Hits</span>
+                  <!--<audio class="sample" src="sample.mp3" controls=""></audio>-->
+                <img src="ZMLPlayer/btnSamplePlayUpw.png" alt="Play Sample" width="64" height="35" valign="middle" align="right"></li>
+                
+                <li class="channel channel-4" draggable="true">
+                <img src="ZMLPlayer/btn_top.png" alt="Move to Top" width="35" height="35" valign="middle" align="left">
+                &nbsp;&nbsp;&nbsp;<span class="title">Alternative Country - American Roots And Alternative Country</span>
+                <!--<audio class="sample" src="sample.mp3" controls=""></audio>--><img src="ZMLPlayer/btnSamplePlayUpw.png" alt="Play Sample" width="64" height="35" valign="middle" align="right"></li>
+                
+                <li class="channel channel-5" draggable="true">
+                <img src="ZMLPlayer/btn_top.png" alt="Move to Top" width="35" height="35" valign="middle" align="left">
+                &nbsp;&nbsp;&nbsp;<span class="title">Traditional Country - Country Classics From The 1960s - 1980s</span>
+                <!--<audio class="sample" src="sample.mp3" controls=""></audio>--><img src="ZMLPlayer/btnSamplePlayUpw.png" alt="Play Sample" width="64" height="35" valign="middle" align="right"></li>
+                
+                <li class="channel channel-6" draggable="true">
+                <img src="ZMLPlayer/btn_top.png" alt="Move to Top" width="35" height="35" valign="middle" align="left">
+                &nbsp;&nbsp;&nbsp;<span class="title">1960s Rock - Rock And Soul Classics For The Boomer Generation</span>
+                <!--<audio class="sample" src="sample.mp3" controls=""></audio>--><img src="ZMLPlayer/btnSamplePlayUpw.png" alt="Play Sample" width="64" height="35" valign="middle" align="right"></li>
+                
+                <li class="channel channel-7" draggable="true">
+                <img src="ZMLPlayer/btn_top.png" alt="Move to Top" width="35" height="35" valign="middle" align="left">
+                &nbsp;&nbsp;&nbsp;<span class="title">1970s Rock - 1970s Rock And Soul</span>
+                  <!--<audio class="sample" src="sample.mp3" controls=""></audio>-->
+                <img src="ZMLPlayer/btnSamplePlayUpw.png" alt="Play Sample" width="64" height="35" valign="middle" align="right"></li>
+                
+                <li class="channel channel-8" draggable="true">
+                <img src="ZMLPlayer/btn_top.png" alt="Move to Top" width="35" height="35" valign="middle" align="left">
+                &nbsp;&nbsp;&nbsp;<span class="title">1980s Rock - 1980s Rock And Soul</span>
+                  <!--<audio class="sample" src="sample.mp3" controls=""></audio>-->
+                <img src="ZMLPlayer/btnSamplePlayUpw.png" alt="Play Sample" width="64" height="35" valign="middle" align="right"></li>
+                
+                <li class="channel channel-9" draggable="true">
+                <img src="ZMLPlayer/btn_top.png" alt="Move to Top" width="35" height="35" valign="middle" align="left">
+                &nbsp;&nbsp;&nbsp;<span class="title">1990s Rock/Alternative - Rock Music For Generation X</span>
+                  <!--<audio class="sample" src="sample.mp3" controls=""></audio>-->
+                <img src="ZMLPlayer/btnSamplePlayUpw.png" alt="Play Sample" width="64" height="35" valign="middle" align="right"></li>
+                
+                <li class="channel channel-10" draggable="true">
+                <img src="ZMLPlayer/btn_top.png" alt="Move to Top" width="35" height="35" valign="middle" align="left">
+                &nbsp;&nbsp;&nbsp;<span class="title">Modern Soul- Current Soul</span>
+                  <!--<audio class="sample" src="sample.mp3" controls=""></audio>-->
+                <img src="ZMLPlayer/btnSamplePlayUpw.png" alt="Play Sample" width="64" height="35" valign="middle" align="right"></li>
+                
+                <li class="channel channel-11" draggable="true">
+                <img src="ZMLPlayer/btn_top.png" alt="Move to Top" width="35" height="35" valign="middle" align="left">
+                &nbsp;&nbsp;&nbsp;<span class="title">Retro Soul- Classic Soul From The 1960s And 1970s</span>
+                <!--<audio class="sample" src="sample.mp3" controls=""></audio>-->
+                <img src="ZMLPlayer/btnSamplePlayUpw.png" alt="Play Sample" width="64" height="35" valign="middle" align="right"></li>
+                
+                <li class="channel channel-12" draggable="true">
+                <img src="ZMLPlayer/btn_top.png" alt="Move to Top" width="35" height="35" valign="middle" align="left">
+                &nbsp;&nbsp;&nbsp;<span class="title">The Café - Singer-Songwriters From The 1980s - 2000s</span>
+                <!--<audio class="sample" src="sample.mp3" controls=""></audio>-->
+                <img src="ZMLPlayer/btnSamplePlayUpw.png" alt="Play Sample" width="64" height="35" valign="middle" align="right"></li>
+                
+                <li class="channel channel-13" draggable="true">
+                <img src="ZMLPlayer/btn_top.png" alt="Move to Top" width="35" height="35" valign="middle" align="left">
+                &nbsp;&nbsp;&nbsp;<span class="title">Altracks - Modern Rock With An Indie Edge</span>
+                <!--<audio class="sample" src="sample.mp3" controls=""></audio>-->
+                <img src="ZMLPlayer/btnSamplePlayUpw.png" alt="Play Sample" width="64" height="35" valign="middle" align="right"></li>
+                
+                <li class="channel channel-14" draggable="true">
+                <img src="ZMLPlayer/btn_top.png" alt="Move to Top" width="35" height="35" valign="middle" align="left">
+                &nbsp;&nbsp;&nbsp;<span class="title">Rock 'N' Roll
+                 - Early Rock From The 1950s</span>
+                <!--<audio class="sample" src="sample.mp3" controls=""></audio>-->
+                <img src="ZMLPlayer/btnSamplePlayUpw.png" alt="Play Sample" width="64" height="35" valign="middle" align="right"></li>
+                
+                <li class="channel channel-15" draggable="true">
+                <img src="ZMLPlayer/btn_top.png" alt="Move to Top" width="35" height="35" valign="middle" align="left">
+                &nbsp;&nbsp;&nbsp;<span class="title">Modern Lounge - Rhythmic Jazz, Soul, And World Music</span>
+                <!--<audio class="sample" src="sample.mp3" controls=""></audio>-->
+                <img src="ZMLPlayer/btnSamplePlayUpw.png" alt="Play Sample" width="64" height="35" valign="middle" align="right"></li>
+                
+                <li class="channel channel-16" draggable="true">
+                <img src="ZMLPlayer/btn_top.png" alt="Move to Top" width="35" height="35" valign="middle" align="left">
+                &nbsp;&nbsp;&nbsp;<span class="title">Soft Rock - Light Rock From The 1960s - 2000s</span>
+                <!--<audio class="sample" src="sample.mp3" controls=""></audio>-->
+                <img src="ZMLPlayer/btnSamplePlayUpw.png" alt="Play Sample" width="64" height="35" valign="middle" align="right"></li>
+                
+                <li class="channel channel-17" draggable="true">
+                <img src="ZMLPlayer/btn_top.png" alt="Move to Top" width="35" height="35" valign="middle" align="left">
+                &nbsp;&nbsp;&nbsp;<span class="title">Workout - Modern - Hi-Energy Dance Tracks</span>
+                <!--<audio class="sample" src="sample.mp3" controls=""></audio>-->
+                <img src="ZMLPlayer/btnSamplePlayUpw.png" alt="Play Sample" width="64" height="35" valign="middle" align="right"></li>
+                
+                <li class="channel channel-18" draggable="true">
+                <img src="ZMLPlayer/btn_top.png" alt="Move to Top" width="35" height="35" valign="middle" align="left">
+                &nbsp;&nbsp;&nbsp;<span class="title">Workout - Rock - Hi-Energy Rock, Modern And Classic</span>
+                <!--<audio class="sample" src="sample.mp3" controls=""></audio>-->
+                <img src="ZMLPlayer/btnSamplePlayUpw.png" alt="Play Sample" width="64" height="35" valign="middle" align="right"></li>
+                
+                <li class="channel channel-19" draggable="true">
+                <img src="ZMLPlayer/btn_top.png" alt="Move to Top" width="35" height="35" valign="middle" align="left">
+                &nbsp;&nbsp;&nbsp;<span class="title">Jazz - Traditional - Classic Jazz, Hard Bop To Modern</span>
+                <!--<audio class="sample" src="sample.mp3" controls=""></audio>-->
+                <img src="ZMLPlayer/btnSamplePlayUpw.png" alt="Play Sample" width="64" height="35" valign="middle" align="right"></li>
+                
+                <li class="channel channel-20" draggable="true">
+                <img src="ZMLPlayer/btn_top.png" alt="Move to Top" width="35" height="35" valign="middle" align="left">
+                &nbsp;&nbsp;&nbsp;<span class="title">Jazz - Smooth - Soft Sounds Of Cool Jazz</span>
+                <!--<audio class="sample" src="sample.mp3" controls=""></audio>-->
+                <img src="ZMLPlayer/btnSamplePlayUpw.png" alt="Play Sample" width="64" height="35" valign="middle" align="right"></li>
+                
+                <li class="channel channel-21" draggable="true">
+                <img src="ZMLPlayer/btn_top.png" alt="Move to Top" width="35" height="35" valign="middle" align="left">
+                &nbsp;&nbsp;&nbsp;<span class="title">Jazz - Latin - Brazilian, Cuban, And Latin-American Jazz</span>
+                <!--<audio class="sample" src="sample.mp3" controls=""></audio>-->
+                <img src="ZMLPlayer/btnSamplePlayUpw.png" alt="Play Sample" width="64" height="35" valign="middle" align="right"></li>
+                <li class="channel channel-22" draggable="true">
+                <img src="ZMLPlayer/btn_top.png" alt="Move to Top" width="35" height="35" valign="middle" align="left">
+                &nbsp;&nbsp;&nbsp;<span class="title">Jazz Vocals - Jazz Vocals From The 1950s - 2000s</span>
+                <!--<audio class="sample" src="sample.mp3" controls=""></audio>-->
+                <img src="ZMLPlayer/btnSamplePlayUpw.png" alt="Play Sample" width="64" height="35" valign="middle" align="right"></li>
+                
+                <li class="channel channel-23" draggable="true">
+                <img src="ZMLPlayer/btn_top.png" alt="Move to Top" width="35" height="35" valign="middle" align="left">
+                &nbsp;&nbsp;&nbsp;<span class="title">Afro-Latin - Brazilian, Cuban, And Latin-American Roots Music</span>
+                <!--<audio class="sample" src="sample.mp3" controls=""></audio>-->
+                <img src="ZMLPlayer/btnSamplePlayUpw.png" alt="Play Sample" width="64" height="35" valign="middle" align="right"></li>
+                
+                <li class="channel channel-24" draggable="true">
+                <img src="ZMLPlayer/btn_top.png" alt="Move to Top" width="35" height="35" valign="middle" align="left">
+                &nbsp;&nbsp;&nbsp;<span class="title">Big Band - Big Bands From The 1940s To Today</span>
+                <!--<audio class="sample" src="sample.mp3" controls=""></audio>-->
+                <img src="ZMLPlayer/btnSamplePlayUpw.png" alt="Play Sample" width="64" height="35" valign="middle" align="right"></li>
+                
+                <li class="channel channel-25" draggable="true">
+                <img src="ZMLPlayer/btn_top.png" alt="Move to Top" width="35" height="35" valign="middle" align="left">
+                &nbsp;&nbsp;&nbsp;<span class="title">Modern Folk - Modern, Acoustic-Based Folk Music</span>
+                 <!--<audio class="sample" src="sample.mp3" controls=""></audio>-->
+                 <img src="ZMLPlayer/btnSamplePlayUpw.png" alt="Play Sample" width="64" height="35" valign="middle" align="right"></li>
+                 
+                 <li class="channel channel-26" draggable="true">
+                 <img src="ZMLPlayer/btn_top.png" alt="Move to Top" width="35" height="35" valign="middle" align="left">
+                 &nbsp;&nbsp;&nbsp;<span class="title">The Folk Tradition - Traditional Folk Music And Standards</span>
+                <!--<audio class="sample" src="sample.mp3" controls=""></audio>-->
+                <img src="ZMLPlayer/btnSamplePlayUpw.png" alt="Play Sample" width="64" height="35" valign="middle" align="right"></li>
+                
+                 <li class="channel channel-27" draggable="true">
+                 <img src="ZMLPlayer/btn_top.png" alt="Move to Top" width="35" height="35" valign="middle" align="left">
+                 &nbsp;&nbsp;&nbsp;<span class="title">Reggae - Reggae And Ska From 1960s - 2000s</span>
+                <!--<audio class="sample" src="sample.mp3" controls=""></audio>-->
+                <img src="ZMLPlayer/btnSamplePlayUpw.png" alt="Play Sample" width="64" height="35" valign="middle" align="right"></li>
+                
+                 <li class="channel channel-28" draggable="true">
+                 <img src="ZMLPlayer/btn_top.png" alt="Move to Top" width="35" height="35" valign="middle" align="left">
+                 &nbsp;&nbsp;&nbsp;<span class="title">Teen - Family-Appropriate Pop Hits And Classics</span>
+                <!--<audio class="sample" src="sample.mp3" controls=""></audio>-->
+                <img src="ZMLPlayer/btnSamplePlayUpw.png" alt="Play Sample" width="64" height="35" valign="middle" align="right"></li>
+                
+                <li class="channel channel-29" draggable="true">
+                <img src="ZMLPlayer/btn_top.png" alt="Move to Top" width="35" height="35" valign="middle" align="left">
+                &nbsp;&nbsp;&nbsp;<span class="title">The Jam - Jam Bands And Psychedelia</span>
+                <!--<audio class="sample" src="sample.mp3" controls=""></audio>-->
+                <img src="ZMLPlayer/btnSamplePlayUpw.png" alt="Play Sample" width="64" height="35" valign="middle" align="right"></li>
+                
+                <li class="channel channel-30" draggable="true">
+                <img src="ZMLPlayer/btn_top.png" alt="Move to Top" width="35" height="35" valign="middle" align="left">
+                &nbsp;&nbsp;&nbsp;<span class="title">Blues - Classic To Modern Blues</span>
+                <!--<audio class="sample" src="sample.mp3" controls=""></audio>-->
+                <img src="ZMLPlayer/btnSamplePlayUpw.png" alt="Play Sample" width="64" height="35" valign="middle" align="right"></li>
+                
+                <li class="channel channel-31" draggable="true">
+                <img src="ZMLPlayer/btn_top.png" alt="Move to Top" width="35" height="35" valign="middle" align="left">
+                &nbsp;&nbsp;&nbsp;<span class="title">Christian Rock - Modern Rock And Pop With A Message</span>
+                <!--<audio class="sample" src="sample.mp3" controls=""></audio>-->
+                <img src="ZMLPlayer/btnSamplePlayUpw.png" alt="Play Sample" width="64" height="35" valign="middle" align="right"></li>
+                
+                <li class="channel channel-32" draggable="true">
+                <img src="ZMLPlayer/btn_top.png" alt="Move to Top" width="35" height="35" valign="middle" align="left">
+                &nbsp;&nbsp;&nbsp;<span class="title">Classical - Orchestral And String Quartets</span>
+                <!--<audio class="sample" src="sample.mp3" controls=""></audio>-->
+                <img src="ZMLPlayer/btnSamplePlayUpw.png" alt="Play Sample" width="64" height="35" valign="middle" align="right"></li>
+                
+                <li class="channel channel-33" draggable="true">
+                <img src="ZMLPlayer/btn_top.png" alt="Move to Top" width="35" height="35" valign="middle" align="left">
+                &nbsp;&nbsp;&nbsp;<span class="title">Spa - Meditative And Nature Sounds For Relaxation</span>
+                <!--<audio class="sample" src="sample.mp3" controls=""></audio>-->
+                <img src="ZMLPlayer/btnSamplePlayUpw.png" alt="Play Sample" width="64" height="35" valign="middle" align="right"></li>
+                
+                <li class="channel channel-34" draggable="true">
+                <img src="ZMLPlayer/btn_top.png" alt="Move to Top" width="35" height="35" valign="middle" align="left">
+                &nbsp;&nbsp;&nbsp;<span class="title">New Orleans - A Gumbo Of New Orleans Soul And Jazz</span>
+                <!--<audio class="sample" src="sample.mp3" controls=""></audio>-->
+                <img src="ZMLPlayer/btnSamplePlayUpw.png" alt="Play Sample" width="64" height="35" valign="middle" align="right"></li>
+                
+                <li class="channel channel-35" draggable="true">
+                <img src="ZMLPlayer/btn_top.png" alt="Move to Top" width="35" height="35" valign="middle" align="left">
+                &nbsp;&nbsp;&nbsp;<span class="title">Holiday - Modern - Modern Christmas Classics</span>
+                <!--<audio class="sample" src="sample.mp3" controls=""></audio>-->
+                <img src="ZMLPlayer/btnSamplePlayUpw.png" alt="Play Sample" width="64" height="35" valign="middle" align="right"></li>
+                
+                <li class="channel channel-36" draggable="true">
+                <img src="ZMLPlayer/btn_top.png" alt="Move to Top" width="35" height="35" valign="middle" align="left">
+                &nbsp;&nbsp;&nbsp;<span class="title">Holiday - Traditional - Traditional Christmas Classics</span>
+                <!--<audio class="sample" src="sample.mp3" controls=""></audio>-->
+                <img src="ZMLPlayer/btnSamplePlayUpw.png" alt="Play Sample" width="64" height="35" valign="middle" align="right"></li>
+                
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- BEGIN Footer -->
+<div class="footer">
+  <div class="block_level_content_holder">
+    <div class="footer_block_first">
+      <h3>ZML Basic</h3>
+      <p><a href="basic.html">Features</a></p>
+      <p><a href="easy_setup.html">Easy Setup</a></p>
+      <p><a href="music.html">The Music</a></p>
+      <p><a href="signup_1.html">Sign Up / Sign In</a></p>
+    </div>
+    <div class="footer_block">
+      <h3>ZML Enterprise</h3>
+      <p><a href="enterprise.html">Features</a></p>
+      <p><a href="easy_setup.html">Setup / Tech Specs</a></p>
+      <p><a href="music.html">The Music</a></p>
+      <p><a href="faqs.html">FAQs</a></p>
+      <p><a href="contact.html">Contact Sales</a></p>
+    </div>
+    <div class="footer_block">
+      <h3>Contact The Lab</h3>
+      <h4>SALES</h4>
+      <p><a href="mailto: musicsales@zinggmusiclab.com">musicsales@zinggmusiclab.com</a></p>
+      <h4>CUSTOMER SUPPORT</h4>
+      <p><a href="mailto:service@zinggmusiclab.com">service@zinggmusiclab.com</a></p>
+      <h4>ONLINE</h4>
+      <p> <a href="contact.html">Online Contact Form</a></p>
+    </div>
+  </div>
+</div>
+<!-- END Footer -->
+<!-- BEGIN Copyright Box -->
+<div class="copyright_bg">
+  <div class="block_level_content_holder">
+    © Copyright Zingg Music Lab. All Rights Reserved.
+  </div>
+</div>
+<!-- END Copyright Box -->
+</body>
+
+</html>

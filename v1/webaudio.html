@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Web Audio API Test</title>
+<script type="text/javascript" src="../js/jquery-1.11.2.min.js"></script>
+</head>
+<body>
+<h1>Web Audio API Test</h1>
+<button id="player" role="button" tabindex="0">Play!</button>
+
+<script type="text/javascript">
+
+try {
+    window.AudioContext = window.AudioContext || window.webkitAudioContext;
+    window.audioContext = new window.AudioContext();
+} catch (e) {
+    console.log('No Web Audio API support');
+}
+
+/*
+ * WebAudioAPISoundManager Constructor
+ */
+var WebAudioAPISoundManager = function (context) {
+    this.context = context;
+    this.bufferList = { };
+    this.playingSounds = { };
+    this.soundList = [ ];
+    this.currentSound = null;
+};
+
+/*
+ * WebAudioAPISoundManager Prototype
+ */
+WebAudioAPISoundManager.prototype = {
+     addSound: function (sound) {
+     	var url = sound.url;
+        this.soundList.push( sound );
+
+        // Load buffer asynchronously
+        var request = new XMLHttpRequest();
+        request.open( 'GET', url, true );
+        request.responseType = 'arraybuffer';
+
+        var self = this;
+
+        request.onload = function () {
+        	console.log( 'got content for ' + url );
+            self.context.decodeAudioData(request.response, function (buffer) {
+		        console.log( 'decoded content for ' + url );
+                if ( !buffer ) {
+                 	alert( 'failed to decode content for ' + url );
+                    return;
+                }
+                self.bufferList[url] = buffer;
+
+                var target = sound.target;
+                if ( target ) {
+                	$( target ).trigger( 'loaded' );
+                }
+            });
+        };
+
+        request.onerror = function () {
+            alert('failed to get content for ' + url);
+        };
+
+        request.send();
+    },
+    playNextSound: function() {
+    	var i = -1;
+    	var n = this.soundList.length - 1;
+    	var snd = this.currentSound;
+    	if (snd) {
+    		var seq = snd.sequence;
+    		for (i = 0; i < n && this.soundList[i].sequence != seq; i++) {
+    		}
+    		// loop to first sound
+    		console.log('current sound index is ' + i);
+    		if (i >= n) {
+    			i = -1;
+    		} 
+    	} else {
+    		console.log('no current sound');
+    	}
+    	i += 1;
+    	console.log('next sound index is ' + i + ' of ' + (n+1) + ' sounds');
+    	if (i <= n) {
+    		snd = this.soundList[i];
+    		snd.play();
+    	}
+    },
+    stopSoundWithUrl: function(url) {
+        if ( this.playingSounds.hasOwnProperty(url) ) {
+            for ( var i in this.playingSounds[url] ) {
+                if ( this.playingSounds[url].hasOwnProperty(i) )
+                    this.playingSounds[url][i].stop();
+            }
+        }
+    }
+};
+
+function playNextSound() {
+	window.webAudioAPISoundManager.playNextSound()
+}
+
+/*
+ * WebAudioAPISound Constructor
+ */
+var WebAudioAPISound = function (url, sequence, options) {
+    this.settings = {
+        loop: false
+    };
+
+    for ( var i in options ) {
+        if (options.hasOwnProperty(i) )
+            this.settings[i] = options[i];
+    }
+
+    this.url = url;
+    this.sequence = sequence;
+
+    window.webAudioAPISoundManager = window.webAudioAPISoundManager || new WebAudioAPISoundManager( window.audioContext );
+    this.manager = window.webAudioAPISoundManager;
+    this.manager.addSound( this );
+};
+
+/*
+ * WebAudioAPISound Prototype
+ */
+WebAudioAPISound.prototype = {
+	isReady: function() {
+        var buffer = this.manager.bufferList[this.url];
+        return ( typeof buffer !== 'undefined' );
+	},
+    play: function () {
+        var buffer = this.manager.bufferList[this.url];
+        //Only play if it's loaded yet
+        if ( typeof buffer !== 'undefined' ) {
+            var source = this.makeSource( buffer );
+            source.loop = this.settings.loop;
+            source.onended = playNextSound;
+            source.start();
+
+            this.manager.currentSound = this;
+
+            if ( !this.manager.playingSounds.hasOwnProperty(this.url) )
+                this.manager.playingSounds[this.url] = [];
+            this.manager.playingSounds[this.url].push( source );
+            return true;
+        }
+        console.log(this.url + ' buffer has not been loaded');
+        return false;
+    },
+    stop: function () {
+        this.manager.stopSoundWithUrl( this.url );
+    },
+    getVolume: function () {
+        return this.translateVolume( this.volume, true );
+    },
+    //Expect to receive in range 0-100
+    setVolume: function (volume) {
+        this.volume = this.translateVolume( volume );
+    },
+    translateVolume: function(volume, inverse){
+        return inverse ? volume * 100 : volume / 100;
+    },
+    makeSource: function (buffer) {
+        var source = this.manager.context.createBufferSource();
+        var gainNode = this.manager.context.createGain();
+        gainNode.gain.value = 1.0; /*this.volume;*/
+        source.buffer = buffer;
+        source.connect( gainNode );
+        gainNode.connect( this.manager.context.destination );
+        return source;
+    }
+};
+
+$( document ).ready( function() {
+	s1 = new WebAudioAPISound( '/hls/ts/shes/summer/08_kids_of_rock_001.aac', 1,
+		{ target: '#player' } );
+	s2 = new WebAudioAPISound( '/hls/ts/shes/summer/08_kids_of_rock_002.aac', 2 );
+
+	$( '#player' ).click( function( e ) {
+		s1.play();
+	});
+	$( '#player' ).on( 'loaded', function( e ) {
+		$( this ).prop( 'disabled', false );
+	});
+});
+
+</script>
+</body>
+</html>

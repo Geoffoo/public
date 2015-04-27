@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+
+<!-- title and meta -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<meta name="description" content="Website desc. goes here." />
+<title>Zingg Music Lab - Contact Us</title>
+
+<!--[if IE]>
+    <script src="js/html5shiv.js"></script>  
+    <style type="text/css">
+    .clear {
+      zoom: 1;
+      display: block;
+    }
+    </style>
+<![endif]-->
+
+<script src="js/jquery-1.11.2.min.js"></script>
+<script src="js/jquery.cookie.js"></script>
+<script src="js/jquery.storageapi.min.js"></script>
+<script src="js/superagent.js"></script>
+<!--<script async src="js/smoothscroll.js"></script>-->
+<script src="js/parsley-config.js"></script>
+<script src="js/parsley.min.js"></script>
+<script src="js/ractive.min.js"></script>
+<script src="js/delorean.min.js"></script>
+<script src="js/dispatcher.js"></script>
+
+<!-- css General -->
+<link rel="stylesheet" href="css/base3.css">
+<link rel="stylesheet" href="css/style3.css">
+<link rel="stylesheet" href="css/parsley.css">
+
+<!-- js -->
+<script>
+    $(document).ready(function(){
+        $("#nav-mobile").html($("#nav-main").html());
+        $("#nav-trigger span").click(function(){
+            if ($("nav#nav-mobile ul").hasClass("expanded")) {
+                $("nav#nav-mobile ul.expanded").removeClass("expanded").slideUp(250);
+                $(this).removeClass("open");
+            } else {
+                $("nav#nav-mobile ul").addClass("expanded").slideDown(250);
+                $(this).addClass("open");
+            }
+        });
+    });
+</script>
+
+<script async src="js/modernizr.js"></script>
+<script async src="js/tabs.js"></script>
+<script async src="js/core.js"></script>
+
+<script>
+$(document).ready(function () {
+
+    var activeDiv = 1;
+    showDiv(activeDiv);
+    var timer = setInterval(changeDiv, 9000);
+
+
+    function changeDiv() {
+        activeDiv++;
+        if (activeDiv == 6) {
+            activeDiv = 1;
+        }
+        showDiv(activeDiv);
+    }
+
+    function showDiv(num) {
+        $('div.display').hide("slow");
+        $('#div' + num).fadeToggle("slow");
+    }
+
+
+});
+
+</script>
+</head>
+
+<body>
+<div id="wrapper">
+  <div id="main">
+    <!-- Begin Top Bar (Discount Coupon / Buy Ticket)  -->
+    <!-- Begin Nav Container -->
+    <div class="container">
+      <div class="inner_container">
+        <div id="nav-trigger">
+          <span><img src="img/zingg_logo2.png" width="162" height="31"><br/>Menu</span>
+        </div>
+        <nav id="nav-main">
+          <div class="logo">
+            <a href="index.html"><img src="img/zingg_logo.png" alt="Zingg Music Lab"></a>
+          </div>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="basic.html">ZML Basic</a></li>
+            <li><a href="enterprise.html">ZML Enterprise</a></li>
+            <li><a href="music.html">The Music</a></li>
+            <li><a href="clients.html">Our Clients</a></li>
+            <!-- <li><a href="index.htm" class="home">Home</a></li>-->
+            <li class="login"><a href="login.html" style="margin-left:20px;">LOGIN</a></li>
+          </ul>
+        </nav>
+        <nav id="nav-mobile"></nav>
+      </div>
+    </div>
+    <!-- End Nav Container -->
+    <!-- Begin Main Content Container -->
+    <div class="block_1_bg">
+      <div class="top_offset">
+        <div class="block_level_content_holder" id="block-1"></div>
+      </div>
+    </div>
+  </div>
+  <!-- BEGIN Footer -->
+  <div class="footer">
+    <div class="block_level_content_holder">
+      <div class="footer_block_first">
+        <h3>ZML Basic</h3>
+        <p><a href="basic.html">Features</a></p>
+        <p><a href="easy_setup.html">Easy Setup</a></p>
+        <p><a href="music.html">The Music</a></p>
+        <p><a href="signup_1.html">Sign Up / Sign In</a></p>
+      </div>
+      <div class="footer_block">
+        <h3>ZML Enterprise</h3>
+        <p><a href="enterprise.html">Features</a></p>
+        <p><a href="easy_setup.html">Setup / Tech Specs</a></p>
+        <p><a href="music.html">The Music</a></p>
+        <p><a href="faqs.html">FAQs</a></p>
+        <p><a href="contact.html">Contact Sales</a></p>
+      </div>
+      <div class="footer_block">
+        <h3>Contact The Lab</h3>
+        <h4>SALES</h4>
+        <p><a href="mailto: musicsales@zinggmusiclab.com">musicsales@zinggmusiclab.com</a></p>
+        <h4>CUSTOMER SUPPORT</h4>
+        <p><a href="mailto:service@zinggmusiclab.com">service@zinggmusiclab.com</a></p>
+        <h4>ONLINE</h4>
+        <p> <a href="contact.html">Online Contact Form</a></p>
+      </div>
+    </div>
+  </div>
+  <!-- END Footer -->
+  <!-- BEGIN Copyright Box -->
+  <div class="copyright_bg">
+    <div class="block_level_content_holder">
+      © Copyright Zingg Music Lab. All Rights Reserved.
+    </div>
+  </div>
+<!-- END Copyright Box -->
+</div>
+
+<!-- Begin Block 1 -->
+<script id='main-tmpl' type='text/ractive'>
+<div class="header_basic">
+  <h1>Contact Zingg Music Lab</h1></div>
+<div class="contact_padding">
+  <div class="contact_text">
+    <p><strong>All Sales Inquiries:</strong>
+      <br/><a href="mailto:musicsales@zinggmusiclab.com">musicsales@zinggmusiclab.com</a></p>
+    <p><strong>Support:</strong>
+      <br/><a href="mailto:service@heliogo.com">service@zinggmusiclab.com</a></p>
+    <p><strong>Phone:</strong>
+      <br/>TBD</p>
+  </div>
+  <div class="form_fields">
+    <form id="contact-form" on-submit="contactUs">
+      <div class="form-title">First Name</div>
+      <input class="form-field" type="text" name="first_name" required />
+      <br />
+      <div class="form-title">Last Name</div>
+      <input class="form-field" type="text" name="last_name" required />
+      <br />
+      <div class="form-title">Company/Organization</div>
+      <input class="form-field" type="text" name="company_name" />
+      <br />
+      <div class="form-title">Email</div>
+      <input class="form-field" type="text" name="email" required data-parsley-type='email' />
+      <br />
+      <div class="form-title">Current Website (if applicable)</div>
+      <input class="form-field" type="text" name="website" />
+      <br />
+      <div class="form-title">Phone</div>
+      <input class="form-field" type="text" name="phone" />
+      <br />
+      <div class="form-title">Questions or Comments</div>
+      <textarea name="comments" cols="" rows="14" class="form-field"></textarea>
+      <br />
+      <div class="signup_button">
+        <button type="submit" id="submit" name="submit" style="width: 240px">Send Message</button>
+      </div>
+    </form>
+  </div>
+</div>
+</script>
+
+<!-- ractive.js view -->
+<script>
+
+var ractive = new Ractive({
+  el: 'block-1',
+  template: '#main-tmpl',
+  magic: false,
+  onrender: function() {
+    if ( $( '#contact-form' ).length > 0 ) {
+      var p_form = $( '#contact-form' );
+      p_form.parsley();
+      this.parsley_init = true;
+    }
+  }
+});
+
+ractive.on( 'contactUs', function( event ) {
+  var e = event.original;
+  if ( e ) { e.preventDefault; e.stopPropagation; }
+  var p_form = $( '#contact-form' ).parsley();
+  if ( p_form.isValid() ) {
+    var data = $( '#contact-form' ).serialize();
+    AuthActions.contactUs( data, null );
+  }
+  return false;
+});
+
+</script>
+
+
+<script type='text/javascript' src='js/jquery.modal.js'></script>
+<script type='text/javascript' src='js/site.js'></script>
+
+<script>
+
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-54262092-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</body>
+</html>

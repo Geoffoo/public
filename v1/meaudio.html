@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>HLS Audio with MediaElement.js</title>
+<script type="text/javascript" src="../js/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" src="../js/jquery.cookie.js"></script>
+<script type="text/javascript" src="../js/jquery.storageapi.min.js"></script>
+<script type="text/javascript" src="../js/jquery.storage.flash.js"></script>
+<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../js/mediaelement-and-player.js"></script>
+<!-- meplayer plugin
+<script src="mejs-feature-backlight.js"></script>
+ -->
+<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="../css/bootstrap-theme.css" />
+<link rel="stylesheet" type="text/css" href='../css/mediaelementplayer.css' />
+</head>
+<body>
+<div class="container">
+	<div class="row col-sm-12" id="flash">
+		<span id="flash-error"></span>
+		<span id="flash-alert"></span>
+		<span id="flash-notice"></span>
+	<div>
+
+	<div class="row col-sm-12" id="header">
+		<h1>Hello <span id="user-title"></span></h1>
+		<div class="row col-sm-12 logged-in">
+			<p>Your login token is<br/>
+				<span id="jwt"></span></p>
+		</div>
+		<div class="row col-sm-12 logged-out">
+			<p>You are not signed in.</p>
+		</div>
+	</div>
+
+	<div class="logged-in">
+		<div class="row col-sm-offset-4 col-sm-4">
+			<audio id="meplayer" width="320" height="30">
+				<source type="application/x-mpegURL" src="/hls/stream/summer_stream/stream-ts.m3u8" />
+				<object id="flashplayer" width="320" height="30" type="application/x-shockwave-flash" data="/player/flashmediaelement.swf">
+					<param name="movie" value="/player/flashmediaelement.swf" />
+					<param name="flashvars" value="controls=true&file=/hls/stream/summer_stream/stream-ts.m3u8" />
+				</object>
+			</audio>
+			<div class="jp-current-time"></div>
+			<div class="jp-details">
+				<div class="jp-title">Now Playing:&nbsp;<span id="jp-title"></span></div>
+			</div>
+			<div class="jp-details">
+				<div class="jp-title">Coming Up:&nbsp;<span id="jp-next"></span></div>
+			</div>
+		</div>
+		<!-- skip song -->
+		<div class="row col-sm-offset-4 col-sm-4">
+			<button id="skip" role="button" tabindex="0">Skip Song</button>
+		</div>
+	</div>
+
+	<div class="row col-sm-12" id="navigation">
+		<p class="logged-in"><a href="/v1/jplayer.html">jPlayer - Native</a></p>
+		<p class="logged-in"><a href="/account.html">My Account</a></p>
+		<p class="logged-in"><a id="logout-btn" href="/logout.html">Sign Out</a></p>
+		<p class="logged-out"><a href="/register.html">Sign Up</a></p>
+		<p class="logged-out"><a href="/v1/ogin.html">Sign In</a></p>
+	</div>
+</div>
+
+<script type="text/javascript">
+// start CDATA <![CDATA[
+
+function redirect( uri_path ) {
+	if (!window.location.origin) {
+	  window.location.origin = window.location.protocol + "//" + 
+		window.location.hostname + 
+		(window.location.port ? ':' + window.location.port: '');
+	}
+	window.location.href = window.location.origin + uri_path;
+}
+
+var meplayer;
+var stream_id;
+var stream_base_url = '/hls/stream/summer_stream/';
+var api_base_url    = '/api/v1/streams/';
+var zml_hls_stream = {
+	media: { 
+		m3u8a: stream_base_url + 'stream-ts.m3u8',
+		poster: null
+	},
+	supplied: 'm3u8a',
+	is_stream: true,
+	ready: false
+};
+
+function get_now_playing() {
+	var stats_url = stream_base_url + 'now-playing-ts.json';
+	$.getJSON( stats_url, function( data ) {
+		stream_id = data.now_playing.stream_id;
+		var song_info = data.now_playing.artist + ' - ' + data.now_playing.title;
+		var coming_up = data.coming_up.artist + ' - ' + data.coming_up.title;
+		$( '#jp-title' ).text( song_info );
+		$( '#jp-next' ).text( coming_up );
+	});
+}
+
+/*
+ * For information on configuring mediaelement.js player see 
+ *  http://mediaelementjs.com/#api
+ *
+ */
+function setup_meplayer() {
+	meplayer = new MediaElementPlayer( '#meplayer', {
+		// initial volume when the player starts
+		startVolume: 0.8,
+		// useful for <audio> player loops
+		loop: false,
+		// enables Flash and Silverlight to resize to content size
+		enableAutosize: true,
+		// the order of controls you want on the control bar 
+		// (and other plugins below)
+		//   'playpause', 'progress', 'current', 'duration', 'tracks', 
+		//   'volume', 'fullscreen'
+		features: [ 'playpause', 'volume', 'current' ],
+		// show controls when playing and mouse is not over the video
+		alwaysShowControls: true,
+		// force iPad's native controls
+		iPadUseNativeControls: false,
+		// force iPhone's native controls
+		iPhoneUseNativeControls: false, 
+		// force Android's native controls
+		AndroidUseNativeControls: false,
+		// forces the hour marker (##:00:00)
+		alwaysShowHours: false,
+		// turns keyboard support on and off for this instance
+		enableKeyboard: true,
+		// when this player starts, it will pause other players
+		pauseOtherPlayers: true,
+		// array of keyboard commands
+		keyActions: [],
+		// shows debug errors on screen
+		enablePluginDebug: false,
+		// remove or reorder to change plugin priority
+		plugins: [ 'flash' ],
+		// specify to force MediaElement to use a particular video or audio type
+		// type: '',
+		// path to Flash and Silverlight plugins
+		pluginPath: '../player/',
+		// name of flash file
+		flashName: 'flashmediaelement.swf',
+		// overrides <video width>
+		// pluginWidth: -1,
+		// overrides <video height>       
+		// pluginHeight: -1,
+		// rate in milliseconds for Flash and Silverlight to fire the timeupdate event
+		// larger number is less accurate, but less strain on plugin->JavaScript bridge
+		timerRate: 250,
+		// some options from flashls.swc?
+		hls_info: true,
+		hls_debug: true,
+		hls_debug2: true,
+		hls_warn: true,
+		hls_error: true,
+		// method that fires when the Flash or Silverlight object is ready
+		success: function (mediaElement, domObject, mediaPlayer) { 
+			console.log( 'meplayer ready' );   
+		},
+		// fires when a problem is detected
+		error: function (e) {
+			// TODO detect if Adobe Flash Player is not installed
+			console.log( 'meplayer error ' + e.description ); 
+		}
+	});
+}
+
+function logout_action( e ) {
+	e.preventDefault();
+
+	var storage = $.localStorage;
+	storage.remove( 'jwt' );
+	storage.remove( 'user' );
+
+	flash_set( 'notice', 'You are now logged out.' );
+	redirect( '/index.html' );	
+}
+
+$( document ).ready( function() { 
+	flash_messages();
+
+	$( '#logout-btn' ).click( logout_action );
+	
+	$( '#skip' ).click( function( e ) {
+		e.preventDefault;
+		$.post( api_base_url + stream_id + '/skip' )
+			.done( function( data ) {
+				if (data.stream && data.stream.index_file) {
+					zml_hls_stream.media.m3u8a = data.stream.index_file;
+					
+					meplayer.pause();
+					meplayer.setSrc( '' );
+					meplayer.setSrc( zml_hls_stream.media.m3u8a );
+					meplayer.play();
+				}
+			});
+	});
+
+	var storage = $.localStorage;
+	var token = storage.get( 'jwt' );
+	var username = storage.get( 'user' );
+	if ( !token || !user ) {
+		$( '.logged-in' ).hide();
+		$( '.logged-out' ).show();
+		/* set up a flash message ('Please log in') */
+	} else {
+		$( '#user-title' ).text( user.username );
+		$( '#jwt' ).text( token.value );
+
+		console.log( 'setting up meplayer' );
+		setup_meplayer();
+		
+		setInterval( get_now_playing, 2000 );
+		get_now_playing();
+
+		$( '.logged-in' ).show();
+		$( '.logged-out' ).hide();
+	}
+});
+
+// end CDATA ]]>
+</script>
+</body>
+</html>

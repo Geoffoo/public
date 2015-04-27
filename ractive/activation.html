@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang='en-US'>
+<head>
+<meta charset='utf-8'>
+<title>Account Activation | Zingg Music Lab</title>
+<script type='text/javascript' src='../js/jquery-1.11.2.min.js'></script>
+<script type='text/javascript' src='../js/jquery.cookie.js'></script>
+<script type='text/javascript' src='../js/jquery.storageapi.min.js'></script>
+<script type='text/javascript' src='../js/superagent.js'></script>
+<script type='text/javascript' src='../js/bootstrap.min.js'></script>
+<script type='text/javascript' src='../js/parsley-config.js'></script>
+<script type='text/javascript' src='../js/parsley.min.js'></script>
+<script type='text/javascript' src='../js/ractive.min.js'></script>
+<script type='text/javascript' src='../js/delorean.min.js'></script>
+<script type='text/javascript' src='../js/dispatcher.js'></script>
+<link rel='stylesheet' type='text/css' href='../css/parsley.css' />
+<link rel='stylesheet' type='text/css' href='../css/bootstrap.min.css' />
+<link rel='stylesheet' type='text/css' href='../css/bootstrap-theme.css' />
+<link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700&subset=latin,latin-ext'>
+<style type='text/css'>
+body, td, th, .btn-channel {
+  font-family: 'Open Sans Condensed', Verdana, sans-serif;
+  font-size: 16px;
+  color: #333333;
+}
+body {
+  background-color: #ffffff;
+}
+</style>
+</head>
+<body>
+<div class='container' id='main' />
+
+<!-- main ractive.js template -->
+<script id='main-tmpl' type='text/ractive'>
+<div class='row col-sm-12' id='flash'>{{>flash}}</div>
+<div class='row col-sm-12' id='header'></div>
+<div class='row col-sm-12' id='activation-form-row'>{{>activation}}</div>
+<div class='row col-sm-12' id='navigation'>{{>navigation}}</div>
+
+<!-- inline partials -->
+<!-- {{>flash}} -->
+{{#each stores.flash.store.messages:i}}
+  <div id='flash-{{i}}' class='flash flash-{{this.level}}'>{{{html}}}</div>
+{{/each}}
+<!-- {{/flash}} -->
+
+<!-- {{>activation}} -->
+<h3>Account Activation</h3>
+{{#if step == 1}}
+<p>Your email address has not been validated. Enter your email address 
+	and click the Send Activation Message button
+	to re-send the activation message.  If you do not receive the
+	message within one hour, please contact Zingg Music Lab for
+	assistance.</p>
+<form class='form-horizontal' id='activation-form' role='form' on-submit='sendActivation'>
+	<div class='form-group'>
+		<label class='col-sm-3 control-label' for='email'>Email Address</label>
+		<div class='col-sm-9 controls'>
+			<input type='text' class='form-control' id='email' name='email' 
+				required data-parsley-type='email' />
+		</div>
+	</div>
+	<div class='form-group'>
+		<div class='col-sm-offset-3 col-sm-9'>
+			<button type='submit' class='btn btn-default' name='submit'>Send Activation Message</button>
+		</div>
+	</div>
+</form>
+{{/if}}
+{{#if step == 2}}
+{{/if}}
+<!-- {{/activation}} -->
+
+<!-- {{>navigation}} -->
+<p class='logged-in'><a href='/index.html'>Wecome Page</a></p>
+<!-- {{/navigation}} -->
+
+</script>
+
+<!-- ractive.js view -->
+<script type='text/javascript'>
+
+var ractive = new Ractive({
+  el: 'main',
+  template: '#main-tmpl',
+  magic: true,
+  data: {
+    stores: {
+      auth: authStore,
+      flash: flashStore 
+    },
+    step: 1
+  },
+  oninit: function() {
+    var _ractive = this;
+    setupRactiveStores( _ractive );
+    var qs = parseQueryString();
+    AuthActions.validateToken( { token: qs['token'], access: 'activation' }, null );
+    FlashActions.showFlash();
+  },
+  onchange: function() {
+
+  },
+  onrender: function() { 
+  	if ( $( '#activation-form' ).length > 0 ) {
+  		var p_form = $( '#activation-form' ).parsley();
+  	}
+  }
+});
+
+ractive.on( 'sendActivation', function( event ) {
+	var p_form = $( '#activation-form' ).parsley();
+  var e = event.original;
+  if ( e ) { e.preventDefault; e.stopPropagation; }
+	if ( p_form.isValid() ) {
+		var data = $( '#activation-form' ).serialize();
+		AuthActions.sendActivation( data, '/index.html' );
+	}
+	return false;
+});
+
+</script>
+</body>
+</html>

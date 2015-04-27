@@ -1,0 +1,8 @@
+
+span.price {
+  float: right;
+}
+
+input#cvv {
+  width: 8em;
+}

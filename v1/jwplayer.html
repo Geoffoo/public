@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>JW Player</title>
+	<script type="text/javascript" src="../js/jquery-1.11.2.min.js"></script>
+	<script type="text/javascript" src="../js/jquery.cookie.js"></script>
+	<script type="text/javascript" src="../js/jquery.storageapi.min.js"></script>
+	<script type="text/javascript" src="../js/jquery.storage.flash.js"></script>
+	<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/assets/jwplayer/jwplayer.js"></script>
+	<script type="text/javascript">jwplayer.key="bsBm2jRHdD8ehEW7NR1P0oH+hbFWIQX+avP05A==";</script>	
+	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="../css/bootstrap-theme.css" />
+</head>
+<body>
+	<div class="container">
+		<div class="row col-sm-12" id="flash">
+			<span id="flash-error"></span>
+			<span id="flash-alert"></span>
+			<span id="flash-notice"></span>
+		<div>
+
+		<div class="row col-sm-12" id="header">
+			<h1>Hello <span id="user-title"></span></h1>
+			<div class="row col-sm-12 logged-in">
+				<p>Your login token is<br/>
+					<span id="jwt"></span></p>
+			</div>
+			<div class="row col-sm-12 logged-out">
+				<p>You are not signed in.</p>
+			</div>
+		</div>
+
+		<div class="row col-sm-offset-4 col-sm-4 logged-in">
+			<div id='jwplayer_1'>Loading the player ...</div>
+		</div>
+
+		<div class="row col-sm-12" id="navigation">
+			<p class="logged-in"><a href="/v1/index.html">jPlayer</a></p>
+			<p class="logged-in"><a href="/account.html">My Account</a></p>
+			<p class="logged-in"><a id="logout-btn" href="/logout.html">Sign Out</a></p>
+			<p class="logged-out"><a href="/register.html">Sign Up</a></p>
+			<p class="logged-out"><a href="/v1/login.html">Sign In</a></p>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+
+function redirect( uri_path ) {
+	if (!window.location.origin) {
+	  window.location.origin = window.location.protocol + "//" + 
+		window.location.hostname + 
+		(window.location.port ? ':' + window.location.port: '');
+	}
+	window.location.href = window.location.origin + uri_path;
+}
+
+/*
+ * JW Player streaming support
+ *
+ * Audio types supported
+ * audio/mp4 streams: aac, m4a, f4a
+ * audio/mpeg streams: mp3
+ * audio/ogg streams: ogg, oga
+ *
+ * See: http://support.jwplayer.com/customer/portal/articles/1403635-media-format-support
+ */
+function setup_jwplayer() {
+	jwplayer( 'jwplayer_1' ).setup({ 
+		height: 180, 
+		width: 360,
+		/* type: 'aac', */
+		/* skin: '/assets/jwplayer/jwplayer-skins-free/five.xml', */
+		/* flashplayer: '/assets/jwplayer/jwplayer.flash.swf', */
+		/* primary: 'flash', */
+		/* 
+		 * M3U8 (Apple HLS) requires JW Player Premium ($299 per year)
+		 * file: 'http://www.abc.net.au/res/streaming/audio/hls/classic_fm.m3u8',
+		 */
+		/* file: 'http://listen.radionomy.com/abc-jazz/mp3:mysong.mp3', */
+		file: 'http://zml-encoder.streamguys.org:8020/;*.aac',
+		/* file: 'http://listen.spacial.com/api/listen/?sid=42965&method=sc&rid=1044222/;*.nsv', */
+	  /* file: 'rtmp://zml-flash.streamguys.org:80/live/aac:mysong.aac', */
+		title: 'Acoustic FM',
+		description: 'Chill out with our soft sounds',
+		onError: function( e ) {
+			flash_now( 'error' + e.type );
+		}
+	});
+}
+
+function logout_action( e ) {
+	e.preventDefault();
+
+	var storage = $.localStorage;
+	storage.remove( 'jwt' );
+	storage.remove( 'user' );
+	redirect( '/index.html' );
+}
+
+$( document ).ready( function() { 
+	$( '#logout-btn' ).click( logout_action );
+
+	var storage = $.localStorage;
+	var token = storage.get( 'jwt' );
+	var user = storage.get( 'user' );
+	if ( !token || !user ) {
+		$( '.logged-in' ).hide();
+		$( '.logged-out' ).show();
+	} else {
+		$( '#user-title' ).text( user.username );
+		$( '#jwt' ).text( token.value );
+
+		setup_jwplayer();
+
+		$( '.logged-in' ).show();
+		$( '.logged-out' ).hide();
+	}
+});
+
+	</script>
+</body>
+</html>

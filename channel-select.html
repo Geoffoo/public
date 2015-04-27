@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+
+<!-- title and meta -->
+<meta charset='utf-8'>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="Website desc. goes here.">
+<title>Zingg Music Lab - Manage Music Channels</title>
+
+<!--[if IE]>
+    <script src="js/html5shiv.js"></script> 
+    <style type="text/css">
+    .clear {
+      zoom: 1;
+      display: block;
+    }
+    </style>
+<![endif]-->
+
+<script src="js/jquery-1.11.2.min.js"></script>
+<script src="js/jquery.cookie.js"></script>
+<script src="js/jquery.storageapi.min.js"></script>
+<script src="js/superagent.js"></script>
+<script src="js/ractive.min.js"></script>
+<script src="js/ractive-sortable.js"></script>
+<script src="js/delorean.min.js"></script>
+<script src="js/dispatcher.js"></script>
+
+<!-- css General -->
+<link rel="stylesheet" href="css/base3.css">
+<link rel="stylesheet" href="css/style3.css">
+<link rel="stylesheet" href="css/channel-select.css">
+
+<!-- js -->
+<script>
+    $(document).ready(function(){
+        $("#nav-mobile").html($("#nav-main").html());
+        $("#nav-trigger span").click(function(){
+            if ($("nav#nav-mobile ul").hasClass("expanded")) {
+                $("nav#nav-mobile ul.expanded").removeClass("expanded").slideUp(250);
+                $(this).removeClass("open");
+            } else {
+                $("nav#nav-mobile ul").addClass("expanded").slideDown(250);
+                $(this).addClass("open");
+            }
+        });
+    });
+</script>
+
+<script async="" src="js/modernizr.js"></script>
+<script async="" src="js/tabs.js"></script>
+<script async="" src="js/core.js"></script>
+
+<script>
+$(document).ready(function () {
+
+    var activeDiv = 1;
+    showDiv(activeDiv);
+    var timer = setInterval(changeDiv, 9000);
+
+
+    function changeDiv() {
+        activeDiv++;
+        if (activeDiv == 6) {
+            activeDiv = 1;
+        }
+        showDiv(activeDiv);
+    }
+
+    function showDiv(num) {
+        $('div.display').hide("slow");
+        $('#div' + num).fadeToggle("slow");
+    }
+});
+</script>
+</head>
+
+<body>
+<div id="wrapper">
+  <div id="main">
+    <!-- Begin Top Bar (Discount Coupon / Buy Ticket)  -->
+    <!-- Begin Nav Container -->
+    <div class="container">
+      <div class="inner_container">
+        <div id="nav-trigger">
+          <span><img src="img/zingg_logo2.png" width="162" height="31"><br>Menu</span>
+        </div>
+        <nav id="nav-main">
+          <div class="logo">
+            <a href="index.html"><img src="img/zingg_logo.png" alt="Zingg Music Lab"></a>
+          </div>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="basic.html">ZML Basic</a></li>
+            <li><a href="enterprise.html">ZML Enterprise</a></li>
+            <li><a href="music.html">The Music</a></li>
+            <li><a href="clients.html">Our Clients</a></li>
+            <!-- <li><a href="index.htm" class="home">Home</a></li>-->
+            <li class="login"><a href="login.html" style="margin-left:20px;">LOGIN</a></li>
+          </ul>
+        </nav>
+        <nav id="nav-mobile">
+          <div class="logo">
+            <a href="index.html"><img src="img/zingg_logo.png" alt="Zingg Music Lab"></a>
+          </div>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="basic.html">ZML Basic</a></li>
+            <li><a href="enterprise.html">ZML Enterprise</a></li>
+            <li><a href="music.html">The Music</a></li>
+            <li><a href="clients.html">Our Clients</a></li>
+            <!-- <li><a href="index.htm" class="home">Home</a></li>-->
+            <li class="login"><a href="login.html" style="margin-left:20px;">LOGIN</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <!-- End Nav Container -->
+    <!-- Begin Main Content Container -->
+    <div id="container" class="block_1_bg">
+      <div class="top_offset">
+        <div class="block_level_content_holder" id="block-1"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- BEGIN Footer -->
+<div class="footer">
+  <div class="block_level_content_holder">
+    <div class="footer_block_first">
+      <h3>ZML Basic</h3>
+      <p><a href="basic.html">Features</a></p>
+      <p><a href="easy_setup.html">Easy Setup</a></p>
+      <p><a href="music.html">The Music</a></p>
+      <p><a href="signup_1.html">Sign Up / Sign In</a></p>
+    </div>
+    <div class="footer_block">
+      <h3>ZML Enterprise</h3>
+      <p><a href="enterprise.html">Features</a></p>
+      <p><a href="easy_setup.html">Setup / Tech Specs</a></p>
+      <p><a href="music.html">The Music</a></p>
+      <p><a href="faqs.html">FAQs</a></p>
+      <p><a href="contact.html">Contact Sales</a></p>
+    </div>
+    <div class="footer_block">
+      <h3>Contact The Lab</h3>
+      <h4>SALES</h4>
+      <p><a href="mailto: musicsales@zinggmusiclab.com">musicsales@zinggmusiclab.com</a></p>
+      <h4>CUSTOMER SUPPORT</h4>
+      <p><a href="mailto:service@zinggmusiclab.com">service@zinggmusiclab.com</a></p>
+      <h4>ONLINE</h4>
+      <p> <a href="contact.html">Online Contact Form</a></p>
+    </div>
+  </div>
+</div>
+<!-- END Footer -->
+<!-- BEGIN Copyright Box -->
+<div class="copyright_bg">
+  <div class="block_level_content_holder">
+    © Copyright Zingg Music Lab. All Rights Reserved.
+  </div>
+</div>
+<!-- END Copyright Box -->
+
+<!-- main ractive.js template -->
+<script id='main-tmpl' type='text/ractive'>
+<div id='channel-bg' class='box-center'>
+  <div id='flash'>{{>flash}}</div>
+  <div id='channel-select'>{{>selector}}</div>
+</div>
+
+<!-- inline partials -->
+<!-- {{>flash}} -->
+{{#each stores.flash.store.messages:i}}
+  <div id='flash-{{i}}' class='flash flash-{{this.level}}'>{{{html}}}</div>
+{{/each}}
+<!-- {{/flash}} -->
+
+<!-- {{>selector}} -->
+{{#with stores.player.store.channel_data}}
+<h2 style="text-align:center; margin-bottom: 15px;">Mix Your Music</h2>
+{{#if channels.length == 0}}
+<p>Tap the Refresh button to load available channels.</p>
+<div class="cselect_buttons">
+  <button type="submit" class="btn btn-default" on-click="refresh">Refresh</button>
+</div>
+{{else}}
+<p>Choose your favorite 6 playlists from 40 music channels.<br />
+Each channel includes curated playlists and hundreds of songs that don&rsquo;t repeat for over 24 hours.<br />
+Choose your channel by genre or energy level.<br />
+Drag the channel boxes to reorder, or tap the Top button to move a channel to the top of the list.<br />
+Tap the Sample button to play a sample track.<br />
+The top 6 channels will be used for your player and for custom mixes.<br />
+Tap the Save Changes button when you&rsquo;re done.</p>
+<div class="cselect_buttons">
+  <button type="submit" class="btn btn-default" on-click="refresh">Refresh</button>
+  <button type="submit" class="btn btn-default" on-click="saveChanges">Save Changes</button>
+</div>
+<ul>
+  {{#each channels:i}}
+  <li decorator="sortable" class="channel channel-{{i}}">
+    <button class="move-to-top" on-click="moveToTop:{{i}}" />
+    <span class="title">{{name}}</span>
+    <button class="sample" on-click="playSample:{{i}}" />
+    <audio id="sample-{{i}}" src="{{sample_file}}" />
+  </li>
+  {{/each}}
+</ul>
+{{/if}}
+{{/with}}
+<!-- {{/selector}} -->
+</script>
+
+<!-- ractive.js view -->
+<script>
+
+var ractive = new Ractive({
+  el: 'block-1',
+  template: '#main-tmpl',
+  magic: false,
+  data: {
+    stores: {
+      auth: authStore,
+      flash: flashStore,
+      player: playerStore
+    },
+    sliced: function(array) { 
+      return array.slice(1); 
+    }
+  },
+  oninit: function() {
+    setupRactiveStores( this );
+    AuthActions.loadAuthToken();
+    PlayerActions.loadChannels();
+    this.updateChannels( false );
+    FlashActions.showFlash();
+  },
+  updateChannels: function( force ) {
+    var token = this.get( 'stores.auth.store.user_data.token.value' );
+    if ( token ) {
+      if ( !force ) {
+        var channels = this.get( 'stores.player.store.channel_data.channels' );
+        force = !channels || channels.length < 7;
+      }
+      if ( force ) {
+        PlayerActions.updateChannels( token, 'ts' );
+      }
+    }
+  },
+  saveChannels: function() {
+    var token = this.get( 'stores.auth.store.user_data.token.value' );
+    if ( token ) {
+      var channels = this.get( 'stores.player.store.channel_data.channels' );
+      // skip custom channel at i = 0
+      for (var i = 1; i < channels.length; i++) {
+        channels[i].position = i;
+        channels[i].active = (i <= 6);
+      }
+      var data = { channels: channels.slice(1, 7), media_format: 'ts' };
+      PlayerActions.saveChannels( token, data, 'music.html' );
+    }
+  }
+});
+
+ractive.on( 'refresh', function() {
+  var e = event.original;
+  if ( e ) { e.preventDefault; e.stopPropagation; }
+  this.updateChannels( true );
+  return false;
+});
+
+ractive.on( 'saveChanges', function( event ) {
+  var e = event.original;
+  if ( e ) { e.preventDefault; e.stopPropagation; }
+  this.saveChannels();
+  return false;
+});
+
+ractive.on( 'moveToTop', function( event, sourceIndex ) {
+  var e = event.original;
+  if ( e ) { e.preventDefault; e.stopPropagation; }
+
+  if ( sourceIndex > 1 ) {
+    PlayerActions.moveChannelToTop( sourceIndex );
+  }
+  return false;
+});
+
+ractive.on( 'playSample', function( event, i ) {
+  var e = event.original;
+  if ( e ) { e.preventDefault; e.stopPropagation; }
+  var audio_id = 'sample-' + i;
+  var audio = document.getElementById( audio_id );
+  if ( audio.paused || audio.ended ) {
+    $( 'audio' ).each( function( j, el ) {
+      if ( el.id != audio_id ) {
+        el.pause();
+      }
+    });
+    audio.play();
+  } else {
+    audio.pause();
+  }
+  return false;
+});
+
+
+</script>
+</body>
+</html>

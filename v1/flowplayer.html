@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Flow Player Test</title>
+<link rel="stylesheet" href="/assets/flowplayer/skin/minimalist.css">
+<style>
+   body { font: 12px "Myriad Pro", "Lucida Grande", sans-serif; text-align: center; padding-top: 5%; }
+   .flowplayer { width: 80%; }
+</style>
+<script type="text/javascript" src="../js/jquery-1.11.2.min.js"></script>
+<script src="/assets/flowplayer/flowplayer.min.js"></script>
+</head>
+<body>
+<div class="flowplayer" data-swf="/assets/flowplayer/flowplayer.swf" data-ratio="0.4167">
+  <video>
+    <source type="application/x-mpegurl" src="/hls/stream/summer_stream/stream-ts.m3u8" />
+  </video>
+</div>
+</body>
+</html>

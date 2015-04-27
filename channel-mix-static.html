@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+
+<!-- title and meta -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="Website desc. goes here.">
+<title>Zingg Music Lab - Mix Your Channels</title>
+
+<!--[if IE]>
+    <script src="js/html5shiv.js"></script> 
+    <style type="text/css">
+    .clear {
+      zoom: 1;
+      display: block;
+    }
+    </style>
+<![endif]-->
+
+<script src="js/jquery-1.11.2.min.js"></script>
+<script src="js/jquery.cookie.js"></script>
+<script src="js/jquery.storageapi.min.js"></script>
+<script src="js/superagent.js"></script>
+<!--<script async src="js/smoothscroll.js"></script>-->
+<script src="js/d3.min.js" charset="utf-8"></script>
+<script src="js/c3.min.js"></script>
+
+    
+<!-- css General -->
+<link rel="stylesheet" href="css/base3.css">
+<link rel="stylesheet" href="css/style3.css">
+<link rel="stylesheet" href="css/c3.css">
+<link rel="stylesheet" href="css/parsley.css">
+<link rel="stylesheet" href="css/channel-mix.css">
+
+<!-- js -->
+<script>
+    $(document).ready(function(){
+        $("#nav-mobile").html($("#nav-main").html());
+        $("#nav-trigger span").click(function(){
+            if ($("nav#nav-mobile ul").hasClass("expanded")) {
+                $("nav#nav-mobile ul.expanded").removeClass("expanded").slideUp(250);
+                $(this).removeClass("open");
+            } else {
+                $("nav#nav-mobile ul").addClass("expanded").slideDown(250);
+                $(this).addClass("open");
+            }
+        });
+    });
+</script>
+
+<script async="" src="js/modernizr.js"></script>
+<script async="" src="js/tabs.js"></script>
+<script async="" src="js/core.js"></script>
+
+<script>
+$(document).ready(function () {
+
+    var activeDiv = 1;
+    showDiv(activeDiv);
+    var timer = setInterval(changeDiv, 9000);
+
+
+    function changeDiv() {
+        activeDiv++;
+        if (activeDiv == 6) {
+            activeDiv = 1;
+        }
+        showDiv(activeDiv);
+    }
+
+    function showDiv(num) {
+        $('div.display').hide("slow");
+        $('#div' + num).fadeToggle("slow");
+    }
+});
+</script>
+</head>
+
+<body>
+<div id="wrapper">
+  <div id="main">
+    <!-- Begin Top Bar (Discount Coupon / Buy Ticket)  -->
+    <!-- Begin Nav Container -->
+    <div class="container">
+      <div class="inner_container">
+        <div id="nav-trigger">
+          <span><img src="img/zingg_logo2.png" width="162" height="31"><br>Menu</span>
+        </div>
+        <nav id="nav-main">
+          <div class="logo">
+            <a href="index.html"><img src="img/zingg_logo.png" alt="Zingg Music Lab"></a>
+          </div>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="basic.html">ZML Basic</a></li>
+            <li><a href="enterprise.html">ZML Enterprise</a></li>
+            <li><a href="music.html">The Music</a></li>
+            <li><a href="clients.html">Our Clients</a></li>
+            <!-- <li><a href="index.htm" class="home">Home</a></li>-->
+            <li class="login"><a href="login.html" style="margin-left:20px;">LOGIN</a></li>
+          </ul>
+        </nav>
+        <nav id="nav-mobile">
+          <div class="logo">
+            <a href="index.html"><img src="img/zingg_logo.png" alt="Zingg Music Lab"></a>
+          </div>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="basic.html">ZML Basic</a></li>
+            <li><a href="enterprise.html">ZML Enterprise</a></li>
+            <li><a href="music.html">The Music</a></li>
+            <li><a href="clients.html">Our Clients</a></li>
+            <!-- <li><a href="index.htm" class="home">Home</a></li>-->
+            <li class="login"><a href="login.html" style="margin-left:20px;">LOGIN</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <!-- End Nav Container -->
+    <!-- Begin Main Content Container -->
+    <div id="container" class="block_1_bg">
+      <div class="top_offset">
+        <div class="block_level_content_holder" id="block-1">
+          <div id='channel-bg' class='box-center'>
+            <div id="channel-mix">
+              <form id="mix-form" on-submit="saveChanges">
+                <h2 style="text-align:center; margin-bottom: 15px;">Mix Your Music</h2>
+<p>Create a custom mix from your 6 favorite channels.<br />
+Give your mix a name.<br />
+Then use the sliders to mix your favorite channels.<br />
+The pie chart indicates the proportion of each playlist in your mix.<br />
+Your custom mix becomes your 7th channel.<br />
+Tap the Save Changes button when you&rsquo;re done.</p>
+                <div class="cmix_button">
+                  <button type="submit" class="btn btn-default">Save Changes</button>
+                </div>
+                <table class="mix-data" width="750px">
+                  <tr>
+                    <td width="390px">
+                      <div class="mix-name-container">
+                        <div class="form-title">Mix Name</div>
+                        <input class="form-field" type="text" id="mix_name" name="mix_name" required>
+                      </div>
+                      <ul>
+                        <li class="channel">
+                          <span id="label-0" class="title">Coffee Cloud</span>
+                          <input type="range" class="slider"
+                            id="sub-0" name="sub_channels.0.weight" data-channel-number="1" 
+                            min="0" max="5" step="1" value="2">
+                        </li>
+                        <li class="channel">
+                          <span id="label-1" class="title">Altracks</span>
+                          <input type="range" class="slider"
+                            id="sub-1" name="sub_channels.1.weight" data-channel-number="2" 
+                            min="0" max="5" step="1" value="1">
+                        </li>
+                        <li class="channel">
+                          <span id="label-2" class="title">Jazz</span>
+                          <input type="range" class="slider"
+                            id="sub-2" name="sub_channels.2.weight" data-channel-number="3" 
+                            min="0" max="5" step="1" value="0">
+                        </li>
+                        <li class="channel">
+                          <span id="label-3" class="title">Decades</span>
+                          <input type="range" class="slider"
+                            id="sub-3" name="sub_channels.3.weight" data-channel-number="4" 
+                            min="0" max="5" step="1" value="5">
+                        </li>
+                        <li class="channel">
+                          <span id="label-4" class="title">High Energy</span>
+                          <input type="range" class="slider"
+                            id="sub-4" name="sub_channels.4.weight" data-channel-number="5" 
+                            min="0" max="5" step="1" value="5">
+                        </li>
+                        <li class="channel">
+                          <span id="label-5" class="title">Dance Trance</span>
+                          <input type="range" class="slider"
+                            id="sub-5" name="sub_channels.5.weight" data-channel-number="6" 
+                            min="0" max="5" step="1" value="5">
+                        </li>
+                      </ul>
+                    </td>
+                    <td>
+                      <div id="chart-container">
+                        <div id="chart"></div>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </form>
+            </div>
+         </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- BEGIN Footer -->
+<div class="footer">
+  <div class="block_level_content_holder">
+    <div class="footer_block_first">
+      <h3>ZML Basic</h3>
+      <p><a href="basic.html">Features</a></p>
+      <p><a href="easy_setup.html">Easy Setup</a></p>
+      <p><a href="music.html">The Music</a></p>
+      <p><a href="signup_1.html">Sign Up / Sign In</a></p>
+    </div>
+    <div class="footer_block">
+      <h3>ZML Enterprise</h3>
+      <p><a href="enterprise.html">Features</a></p>
+      <p><a href="easy_setup.html">Setup / Tech Specs</a></p>
+      <p><a href="music.html">The Music</a></p>
+      <p><a href="faqs.html">FAQs</a></p>
+      <p><a href="contact.html">Contact Sales</a></p>
+    </div>
+    <div class="footer_block">
+      <h3>Contact The Lab</h3>
+      <h4>SALES</h4>
+      <p><a href="mailto: musicsales@zinggmusiclab.com">musicsales@zinggmusiclab.com</a></p>
+      <h4>CUSTOMER SUPPORT</h4>
+      <p><a href="mailto:service@zinggmusiclab.com">service@zinggmusiclab.com</a></p>
+      <h4>ONLINE</h4>
+      <p> <a href="contact.html">Online Contact Form</a></p>
+    </div>
+  </div>
+</div>
+<!-- END Footer -->
+<!-- BEGIN Copyright Box -->
+<div class="copyright_bg">
+  <div class="block_level_content_holder">
+    © Copyright Zingg Music Lab. All Rights Reserved.
+  </div>
+</div>
+
+<script>
+var chart = null;
+
+function getSliderData() {
+  var data = [ ];
+  for (var i = 0; i < 6; i++) {
+    var sval = $( '#sub-' + i ).val();
+    var slabel = $( '#label-' + i ).text();
+    data.push([ slabel, parseInt(sval) ]);
+  }
+  return data;
+}
+
+function updateDonut() {
+  if ( chart ) {
+    var cols = getSliderData();
+    chart.load({
+      columns: cols
+    });
+  }
+}
+
+$(document).ready(function() {
+  var cols = getSliderData();
+  chart = c3.generate({
+    padding: {
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+    },
+    data: {
+      columns:     cols,
+      type:        'donut',
+      onclick:     function (d, i) { console.log("onclick", d, i); },
+      onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+      onmouseout:  function (d, i) { console.log("onmouseout", d, i); }
+    },
+    color: {
+      pattern: [
+        '#93BAFA', '#6C9AEF', '#4971D6', '#2048C8', '#142FA6', '#0C1C64'
+      ]
+    },
+    legend: {
+      position: 'right'
+    },
+    donut: {
+      width: 64,
+      title: 'Your Mix',
+      label: {
+        format: function (value, ratio, id) {
+          var l = d3.format('.0f')(ratio*100.0);
+          return l + '%';
+        }
+      }
+    }
+  });
+  $( '.slider' ).on( 'change', updateDonut );
+});
+</script>
+
+</body>
+</html>

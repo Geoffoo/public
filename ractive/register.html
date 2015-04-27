@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang='en-US'>
+<head>
+<meta charset='utf-8'>
+<title>Sign Up | Zingg Music Lab</title>
+<script type='text/javascript' src='../js/jquery-1.11.2.min.js'></script>
+<script type='text/javascript' src='../js/jquery.cookie.js'></script>
+<script type='text/javascript' src='../js/jquery.storageapi.min.js'></script>
+<script type='text/javascript' src='../js/superagent.js'></script>
+<script type='text/javascript' src='../js/bootstrap.min.js'></script>
+<script type='text/javascript' src='../js/parsley-config.js'></script>
+<script type='text/javascript' src='../js/parsley.min.js'></script>
+<script type='text/javascript' src='../js/ractive.min.js'></script>
+<script type='text/javascript' src='../js/delorean.min.js'></script>
+<script type='text/javascript' src='../js/dispatcher.js'></script>
+<!-- 
+<script type='text/javascript' src='https://js.recurly.com/v3/recurly.js'></script>
+-->
+<link rel='stylesheet' type='text/css' href='../css/parsley.css' />
+<link rel='stylesheet' type='text/css' href='../css/bootstrap.min.css' />
+<link rel='stylesheet' type='text/css' href='../css/bootstrap-theme.css' />
+<link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700&subset=latin,latin-ext'>
+<style type='text/css'>
+body, td, th, .btn-channel {
+  font-family: 'Open Sans Condensed', Verdana, sans-serif;
+  font-size: 16px;
+  color: #333333;
+}
+body {
+  background-color: #ffffff;
+}
+</style>
+</head>
+<body>
+<div class='container' id='main' />
+
+<!-- main ractive.js template -->
+<script id='main-tmpl' type='text/ractive'>
+<div class='row col-sm-12' id='flash'>{{>flash}}</div>
+<div class='row col-sm-12' id='header'></div>
+<div class='row col-sm-12' id='step1-form-row'>{{>step1}}</div>
+<div class='row col-sm-12' id='step2-form-row'>{{>step2}}</div>
+<div class='row col-sm-12' id='navigation'>
+  <p class='logged-in'><a href='/index.html'>Cancel and Return to Welcome Page</a></p>
+</div>
+
+<!-- inline partials -->
+<!-- {{>flash}} -->
+{{#each stores.flash.store.messages:i}}
+  <div id='flash-{{i}}' class='flash flash-{{this.level}}'>{{{html}}}</div>
+{{/each}}
+<!-- {{/flash}} -->
+
+<!-- {{>step1}} -->
+{{#if step == 1 }}
+<h3>Step 1 - Pick a Username and Password</h3>
+<form class='form-horizontal' id='step1-form' role='form' on-submit='submitStep1'>
+	<div class='form-group'>
+		<label class='col-sm-3 control-label' for='email'>Email Address</label>
+		<div class='col-sm-9 controls'>
+			<input type='text' class='form-control' id='email' name='email' 
+				required data-parsley-type='email' />
+		</div>
+	</div>
+	<div class='form-group'>
+		<label class='col-sm-3 control-label' for='username'>Choose a Username</label>
+		<div class='col-sm-9 controls'>
+			<input type='text' class='form-control' id='username' name='username' 
+				required required data-parsley-pattern='^[.-_A-Za-z0-9]{5,20}$' />
+		</div>
+	</div>
+	<div class='form-group'>
+		<label class='col-sm-3 control-label' for='password'>Password</label>
+		<div class='col-sm-9 controls'>
+			<input type='password' class='form-control' id='password' name='password' 
+			required data-parsley-pattern='^[-_A-Za-z0-9!@$#%^&*()+=~:;,./\\]{5,20}$' />
+		</div>
+	</div>
+	<div class='form-group'>
+		<label class='col-sm-3 control-label' for='password-confirmation'>Confirm Password</label>
+		<div class='col-sm-9 controls'>
+			<input type='password' class='form-control' id='password-confirmation' name='password_confirmation' 
+				required data-parsley-equalto='#password' />
+		</div>
+	</div>
+	<div class='form-group'>
+		<div class='col-sm-offset-3 col-sm-9'>
+			<button type='submit' class='btn btn-default' id='submit-step1' name='submit_step1'>Sign Up - Step 1</button>
+		</div>
+	</div>
+</form>
+{{/if}}
+<!-- {{/step1}} -->
+
+<!-- {{>step2}} -->
+{{#if step == 2 }}
+<h3>{{stores.auth.store.user_data.username}} - Step 2 - Billing Information</h3>
+<form class='form-horizontal' id='step2-form' role='form' on-submit='submitStep2'>
+	<input id='step2-token' name='token' type='hidden' value='{{stores.auth.store.user_data.signup_token.value}}' />
+
+	<div class='form-group'>
+		<label class='col-sm-3 control-label' for='first-name'>First Name</label>
+		<div class='col-sm-9 controls'>
+			<input type='text' class='form-control' id='first-name' name='first_name' required />
+		</div>
+	</div>
+	<div class='form-group'>
+		<label class='col-sm-3 control-label' for='last-name'>Last Name</label>
+		<div class='col-sm-9 controls'>
+			<input type='text' class='form-control' id='last-name' name='last_name' required />
+		</div>
+	</div>
+	<div class='form-group'>
+		<label class='col-sm-3 control-label' for='company-name'>Company Name (optional)</label>
+		<div class='col-sm-9 controls'>
+			<input type='text' class='form-control' id='company-name' name='company_name' />
+		</div>
+	</div>
+	<div class='form-group'>
+		<label class='col-sm-3 control-label' for='address1'>Address Line 1</label>
+		<div class='col-sm-9 controls'>
+			<input type='text' class='form-control' id='address1' name='address1' required />
+		</div>
+	</div>
+	<div class='form-group'>
+		<label class='col-sm-3 control-label' for='address2'>Address Line 2</label>
+		<div class='col-sm-9 controls'>
+			<input type='text' class='form-control' id='address2' name='address2' />
+		</div>
+	</div>
+	<div class='form-group'>
+		<label class='col-sm-3 control-label' for='city'>City</label>
+		<div class='col-sm-9 controls'>
+			<input type='text' class='form-control' id='city' name='city' required />
+		</div>
+	</div>
+	<div class='form-group'>
+    <label class='col-sm-3 control-label' for='state'>State or Province</label>
+    <div class='col-sm-9 controls'>
+      <select class='form-control' id='state' name='state' value='{{state}}' required>
+        <option value='' selected disabled>Choose --</option>
+        <option value='AL'>Alabama</option>
+        <option value='AK'>Alaska</option>
+        <option value='AZ'>Arizona</option>
+        <option value='AR'>Arkansas</option>
+        <option value='CA'>California</option>
+        <option value='CO'>Colorado</option>
+        <option value='CT'>Connecticut</option>
+        <option value='DE'>Delaware</option>
+        <option value='DC'>District Of Columbia</option>
+        <option value='FL'>Florida</option>
+        <option value='GA'>Georgia</option>
+        <option value='HI'>Hawaii</option>
+        <option value='ID'>Idaho</option>
+        <option value='IL'>Illinois</option>
+        <option value='IN'>Indiana</option>
+        <option value='IA'>Iowa</option>
+        <option value='KS'>Kansas</option>
+        <option value='KY'>Kentucky</option>
+        <option value='LA'>Louisiana</option>
+        <option value='ME'>Maine</option>
+        <option value='MD'>Maryland</option>
+        <option value='MA'>Massachusetts</option>
+        <option value='MI'>Michigan</option>
+        <option value='MN'>Minnesota</option>
+        <option value='MS'>Mississippi</option>
+        <option value='MO'>Missouri</option>
+        <option value='MT'>Montana</option>
+        <option value='NE'>Nebraska</option>
+        <option value='NV'>Nevada</option>
+        <option value='NH'>New Hampshire</option>
+        <option value='NJ'>New Jersey</option>
+        <option value='NM'>New Mexico</option>
+        <option value='NY'>New York</option>
+        <option value='NC'>North Carolina</option>
+        <option value='ND'>North Dakota</option>
+        <option value='OH'>Ohio</option>
+        <option value='OK'>Oklahoma</option>
+        <option value='OR'>Oregon</option>
+        <option value='PA'>Pennsylvania</option>
+        <option value='RI'>Rhode Island</option>
+        <option value='SC'>South Carolina</option>
+        <option value='SD'>South Dakota</option>
+        <option value='TN'>Tennessee</option>
+        <option value='TX'>Texas</option>
+        <option value='UT'>Utah</option>
+        <option value='VT'>Vermont</option>
+        <option value='VA'>Virginia</option>
+        <option value='WA'>Washington</option>
+        <option value='WV'>West Virginia</option>
+        <option value='WI'>Wisconsin</option>
+        <option value='WY'>Wyoming</option>
+        <option value='AB'>Alberta</option>
+        <option value='BC'>British Columbia</option>
+        <option value='MB'>Manitoba</option>
+        <option value='NB'>New Brunswick</option>
+        <option value='NL'>Newfoundland and Labrador</option>
+        <option value='NS'>Nova Scotia</option>
+        <option value='ON'>Ontario</option>
+        <option value='PE'>Prince Edward Island</option>
+        <option value='QC'>Quebec</option>
+        <option value='SK'>Saskatchewan</option>
+        <option value='NT'>Northwest Territories</option>
+        <option value='NU'>Nunavut</option>
+        <option value='YT'>Yukon</option> 
+      </select>
+    </div>
+  </div>
+  <div class='form-group'>
+    <label class='col-sm-3 control-label' for='postal-code'>Zip Code</label>
+    <div class='col-sm-9 controls'>
+      <input type='text' class='form-control' id='postal-code' name='postal_code' required />
+    </div>
+  </div>
+  <div class='form-group'>
+    <label class='col-sm-3 control-label' for='country'>Country</label>
+    <div class='col-sm-9 controls'>
+      <select class='form-control' id='country' name='country' value='{{country}}' required>
+        <option value='' selected disabled>Choose --</option>
+        <option value='US' selected>United States</option>
+        <option value='CA'>Canada</option>
+      </select>
+    </div>
+  </div>
+  <div class='form-group'>
+    <label class='col-sm-3 control-label' for='phone'>Phone</label>
+    <div class='col-sm-9 controls'>
+      <input type='text' class='form-control' id='phone' name='phone' required />
+    </div>
+  </div>
+	<div class='form-group'>
+		<div class='col-sm-offset-3 col-sm-9'>
+			<button type='submit' class='btn btn-default' id='submit-step2' name='submit_step2'>Sign Up - Step 2</button>
+		</div>
+	</div>
+</form>
+{{/if}}
+<!-- {{/step2}} -->
+
+</script>
+
+<!-- ractive.js view -->
+<script type='text/javascript'>
+
+var ractive = new Ractive({
+  el: 'main',
+  template: '#main-tmpl',
+  magic: true,
+  data: {
+    stores: {
+      auth: authStore,
+      flash: flashStore 
+    },
+    step: 1,
+  },
+  oninit: function() {
+    var _ractive = this;
+    setupRactiveStores( _ractive );
+    FlashActions.showFlash();
+  },
+  onchange: function() {
+    if ( this.data.step == 1 ) {
+      if ( this.data.stores.auth.store.user_data.signup_token ) {
+        this.set( 'step', 2 );
+      } else {
+    		var errors = this.get( 'stores.auth.store.form_errors.step1' );
+        if ( errors ) {
+      		for (var i=0; i<errors.length; i++) {
+    				var p_field = $( "input[name='" + errors[i].field + "']" ).parsley();
+    				var message = 'This value ' + errors[i].error;
+    				window.ParsleyUI.addError(p_field, 'validate-step1', message );
+    			}
+        }
+  		}
+    }
+    if ( this.data.step == 2 ) {
+      var errors = this.get( 'stores.auth.store.form_errors.step2' );
+      if ( errors ) {
+    		for (var i=0; i<errors.length; i++) {
+  				var p_field = $( "input[name='" + errors[i].field + "']" ).parsley();
+  				var message = 'This value ' + errors[i].error;
+  				window.ParsleyUI.addError(p_field, 'validate-step2', message );
+  			}
+  		}
+    }
+  },
+  onrender: function() { 
+  	if ( $( '#step1-form' ).length > 0 ) {
+  		var p_form_step1 = $( '#step1-form' ).parsley();
+  	}
+  	if ( $( '#step2-form' ).length > 0 ) {
+  		var p_form_step2 = $( '#step2-form' ).parsley();
+  	}
+  }
+});
+
+ractive.on( 'submitStep1', function( event ) {
+	var e = event.original;
+	if ( e ) { e.preventDefault; e.stopPropagation; }
+	var p_form_step1 = $( '#step1-form' ).parsley();
+	if ( p_form_step1.isValid() ) {
+		var data = $( '#step1-form' ).serialize();
+		AuthActions.signUpStep1( data );
+	}
+	return false;
+});
+
+ractive.on( 'submitStep2', function( event ) {
+  var p_form_step2 = $( '#step2-form' ).parsley();
+	var e = event.original;
+	if ( e ) { e.preventDefault; e.stopPropagation; }
+	if ( p_form_step2.isValid() ) {
+		var data = $( '#step2-form' ).serialize();
+		AuthActions.signUpStep2( data, '../player/tablet.html' );
+	}
+	return false;
+});
+
+</script>
+</body>
+</html>
